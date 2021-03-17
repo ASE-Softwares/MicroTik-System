@@ -30,13 +30,6 @@
     <!-- Custom scripts for all pages-->
     <script src="{{ asset("js/admin/admin-2.js") }}"></script>
 
-    <!-- Page level plugins -->
-    <script src="{{ asset("js/admin/Chart.js") }}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{{ asset("js/admin/chart-area-demo.js") }}"></script>
-    <script src="{{ asset("js/admin/chart-pie-demo.js") }}"></script>
-
     @yield('styles')
 
 </head>
@@ -288,9 +281,11 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('change-router') }} "
+                                        onclick="event.preventDefault();
+                                                    document.getElementById('change-router').submit();">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
+                                    Change Router
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -304,6 +299,10 @@
                                     Logout
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+
+                                <form id="change-router" action="{{ route('change-router') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </div>

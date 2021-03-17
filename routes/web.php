@@ -41,6 +41,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('store', [App\Http\Controllers\AdminAnyController::class, 'store'])->name('admin.store');
     // Route::get('edit/{user}', [App\Http\Controllers\AdminAnyController::class, 'edit'])->name('admin.edit');
     // Route::get('show/{user}', [App\Http\Controllers\AdminAnyController::class, 'show'])->name('admin.show');
+
+    Route::post('/change-router', [App\Http\Controllers\AdminAnyController::class, 'changeRouter'])->name('change-router');
     
 });
 

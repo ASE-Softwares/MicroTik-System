@@ -18,31 +18,19 @@
             }
         </style>
 
-        
 
+
+        <script src="{{ asset('js/admin/jquery.js') }}"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="{{ asset('js/all.js') }}"></script>
+
         <!------ Include the above in your HEAD tag ---------->
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" type="text/css">
-        <link rel="stylesheet" href="https://demo.themesberg.com/pixel-pro/css/pixel.css" type="text/css">
         <link href="{{ asset('css/routerLogin.css') }}" rel="stylesheet" media="all">
+        <link href="{{ asset('css/admin/pixel.css') }}" rel="stylesheet" media="all">
     </head>
     <body class="antialiased">
-        <div id="app" class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
-            {{-- @if (Route::has('login'))
-                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                    @auth
-                        <a href="{{ url('/home') }}" class="text-sm text-gray-700 underline">Home</a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif --}}
+        <div id="app" class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0"> 
 
             <div class="section section-md py-5">
                 <div class="container">
@@ -96,15 +84,12 @@
                                                 <ul class="list-group mb-4">
                                                     @if (!isset($package['desription']))
                                                         @foreach (json_decode($package['description']) as $description)
-                                                                <li class="list-group-item">{{ isset($description)? $description: "" }}</li>
+                                                            <li class="list-group-item">{{ isset($description)? $description: "" }}</li>
                                                         @endforeach
                                                     @endif
                                                     
                                                 </ul>
-                                                <pay-button :sel_package="{{$package}}"/>
-                                                {{-- <button id="{{ $package['id'] }}" type="button" class="btn btn-white btn-block text-dark font-weight-bold animate-up-2"
-                                                    tabindex="0" data-toggle="modal" data-target="#myModal">
-                                                    <span class="fas fa-money-check-alt" ></span> Purchase </button> --}}
+                                                <pay-button :sel_package="{{ $package }}"/>
                                             </div>
 
                                             <!-- Modal -->
@@ -127,46 +112,9 @@
                     </div>
                 </div>
             </div>
-            <div id="myModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-            
-                <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            {{-- <button type="button" class="close" data-dismiss="modal">&times;</button> --}}
-                            <h4 class="modal-title">Phone Number: </h4>
-                            </div>
-                            <div class="modal-body">
-                                <form action="{{route('purchase')}}" method="post">
-                                    
-                                    @csrf 
-                                    <div class="input-group">
-                                        <input class="input--style-2" type="text" placeholder="Enter Your Phone Number: " name="phone-number" value={{ @old('ip') }}>
-                                    </div>
-                                    
-                                    <div class="input-group d-none">
-                                        <input class="input--style-2" type="text" placeholder="" name="package-id" value="">
-                                    </div>
-
-                                    <div class="">
-                                        <button class="btn btn--radius btn--green" type="submit">Proceed</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-            
-                </div>
-            </div>
-            
         </div>
-
-        <script type="text/javascript" src="https://demo.themesberg.com/pixel-pro/node_modules/jquery/dist/jquery.min.js"></script>
-        <script type="text/javascript" src="https://demo.themesberg.com/pixel-pro/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://demo.themesberg.com/pixel-pro/assets/js/pixel.js"></script>
     </body>
-
-    
+  
 </html>
 
 

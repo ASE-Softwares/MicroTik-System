@@ -43,7 +43,7 @@ class AdminController extends Controller
 
 
     public function remove_user($mac_address){  	
-    	$user = $this->get_user($mac);
+    	$user = $this->get_user($mac_address);
     	if (!empty($user[0]['.id'])) {
     	    $userId     = $user[0]['.id'];
 
@@ -54,7 +54,7 @@ class AdminController extends Controller
 
     	    // Remove user from RouterOS
     	    $removeUser = $this->client->query($query)->read();
-    	    return $remove_user;
+    	    return $removeUser;
     	}else{
     		return "User not Found";
     	}

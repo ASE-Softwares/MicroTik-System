@@ -58,7 +58,7 @@ class AdminController extends Controller
 
 
     public function remove_user($mac_address){  	
-    	$user = $this->get_user($mac);
+    	$user = $this->get_user($mac_address);
     	if (!empty($user[0]['.id'])) {
     	    $userId     = $user[0]['.id'];
 
@@ -70,7 +70,7 @@ class AdminController extends Controller
     	    // Remove user from RouterOS
           $this->connection();
     	    $removeUser = $this->client->query($query)->read();
-    	    return $remove_user;
+    	    return $removeUser;
     	}else{
     		return "User not Found";
     	}
@@ -150,7 +150,7 @@ class AdminController extends Controller
            'rate-limit'=>$data['rate-limit'],
            'price'=>$data['price'],
            'keepalive-timeout'=>$data['keepalive-timeout'],
-           'micro_tik_id'=>$this->current_microtik_id,
+           'micro_tik_id'=>$this->current_microtik_id,           
            'description'=>$descripJSON
        ]);
 
@@ -175,10 +175,12 @@ class AdminController extends Controller
 
    // Get users existing in hotspot
    public function hotspot_users(){
-     $query = new RouterOS\Query('/ip/hotspot/user/print'); 
+     $query = new RouterOS\Query('/ip/hotspot/user/print');
      $this->connection();        
      $userProfiles = $this->client->query($query)->read(); 
-     return $userProfiles;
+
+    //  return $userProfiles;
+    return view('admin.users.view_users', compact('userProfiles'));
    }
 
    public function logs(){

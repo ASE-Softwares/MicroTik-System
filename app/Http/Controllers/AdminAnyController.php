@@ -101,4 +101,20 @@ class AdminAnyController extends Controller
         $user->delete();
         return $this->index();
     }
+
+    public function changeRouter(Request $request) {
+        if($request->session()->exists('router_session')){
+            $logged_in_to_router =true;
+        }else{
+            $logged_in_to_router =false;
+        }
+        //if you logged in to router 
+        if ($logged_in_to_router) {
+            $request()->session()->forget("router_session");
+            return redirect(route('router_login'));
+        }else{
+            return redirect(route('router_login'));
+        }
+    }
+    
 }

@@ -10,16 +10,17 @@
     <meta name="author" content="">
 
     <title>Microtik Admin - Dashboard</title>
+    
 
-    <!-- Custom fonts for this template-->
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-    {{-- <link href="{{ asset("css/admin/all.min.css") }}" rel="stylesheet" type="text/css"> --}}
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="{{ asset("css/admin/admin-2.css") }}" rel="stylesheet">
+
+
+    <script src="{{ asset('js/admin/jquery.js') }}"></script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -30,12 +31,8 @@
     <!-- Custom scripts for all pages-->
     <script src="{{ asset("js/admin/admin-2.js") }}"></script>
 
-    <!-- Page level plugins -->
-    <script src="{{ asset("js/admin/Chart.js") }}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{{ asset("js/admin/chart-area-demo.js") }}"></script>
-    <script src="{{ asset("js/admin/chart-pie-demo.js") }}"></script>
+    {{-- font awesome --}}
+    <script src="{{ asset('js/all.js') }}"></script>
 
     @yield('styles')
 
@@ -53,9 +50,9 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route("home") }}">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-router"></i>
+                    <i class="fas fa-server"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Mikrotik System</div>
+                <div class="sidebar-brand-text mx-3">Admin Panel</div>
             </a>
 
             <!-- Divider -->
@@ -105,7 +102,6 @@
                         <h6 class="collapse-header">Functions:</h6>
                         <a class="collapse-item" href="{{ route('showForm') }}">Create Package</a>
                         <a class="collapse-item" href="{{ route("listProfiles") }}">View Packages</a>
-                        <a class="collapse-item" href="#">View Users</a>
                     </div>
                 </div>
             </li>
@@ -113,19 +109,23 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmins"
                     aria-expanded="true" aria-controls="collapseAdmins">
-                    <i class="fas fa-cubes"></i>
-                    <span>MIcroTik Admins</span>
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
                 </a>
                 <div id="collapseAdmins" class="collapse" aria-labelledby="AdminUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Functions:</h6>
+                        <h6 class="collapse-header">Admins:</h6>
                         <a class="collapse-item" href="{{ route('admin.index') }}">View Admins</a>
-                        <a class="collapse-item" href="{{ route("admin.create") }}">Add Admins</a>                        
+                        <a class="collapse-item" href="{{ route("admin.create") }}">Add Admins</a>       
+                        <h6 class="collapse-header">Mikrotik Users:</h6>       
+                        <a class="collapse-item" href="{{ route('admin.allUsers') }}">View Users</a>
+                        <a></a>
                     </div>
                 </div>
             </li>
 
+            
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -288,9 +288,11 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('change-router') }} "
+                                        onclick="event.preventDefault();
+                                                    document.getElementById('change-router').submit();">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
+                                    Change Router
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -303,7 +305,15 @@
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
+                                <a class="dropdown-item text-danger" href="#">
+                                    <i class="fas fa-times fa-sm fa-fw mr-2 text-gray-400"></i>
+                                   Delete Account
+                                </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+
+                                <form id="change-router" action="{{ route('change-router') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </div>

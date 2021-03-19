@@ -34,6 +34,13 @@
                     </div>
 
                     <div class="input-group">
+                        <input class="input--style-2" type="time" placeholder="Duration" name="keepalive-timeout" value={{ @old('rate-limit') }}>
+                        @error('keepalive-timeout')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="input-group">
                         <input class="input--style-2" type="text" placeholder="Rate Limit" name="rate-limit" value={{ @old('rate-limit') }}>
                         @error('rate-limit')
                             <span class="text-danger">{{ $message }}</span>

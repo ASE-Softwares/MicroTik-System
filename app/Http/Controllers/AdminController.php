@@ -114,8 +114,7 @@ class AdminController extends Controller
     /*
         show form for creating profile
     */
-    public function showForm(){
-        $profiles = $this->userProfiles();        
+    public function showForm(){                
         return view('admin.profiles.create-profile');
     }
 
@@ -127,6 +126,7 @@ class AdminController extends Controller
        'rate-limit' =>'nullable',
        'price'=>'required|numeric',
        'description'=>'nullable',
+       'keepalive-timeout'=>'required'
      ]);
 
     $descrip = explode(";", $data['description']);
@@ -136,12 +136,12 @@ class AdminController extends Controller
          (new RouterOs\Query('/ip/hotspot/user/profile/add'))
              ->equal('name', $data['name'])
              ->equal('shared-users',$data['shared-users'])
+             ->equal('keepalive-timeout',$data['keepalive-timeout'])
              ->equal('rate-limit', $data['rate-limit']);
               // Add user
        $this->connection();
        $response =  $this->client->query($query)->read();
-       $microtik = 
-
+       $this->discover_microtik();
     //    dd($descripJSON);
        //extend the profile to database
        $newResponse = Profile::create([
@@ -149,7 +149,8 @@ class AdminController extends Controller
            'shared-users'=>$data['shared-users'],
            'rate-limit'=>$data['rate-limit'],
            'price'=>$data['price'],
-           'micro_tik_id'=>$microtic,
+           'keepalive-timeout'=>$data['keepalive-timeout'],
+           'micro_tik_id'=>$this->current_microtik_id,
            'description'=>$descripJSON
        ]);
 
@@ -169,7 +170,6 @@ class AdminController extends Controller
     $query = new RouterOS\Query('/ip/hotspot/user/profile/print');
     $this->connection();      
     $profiles = $this->client->query($query)->read();
-    dd($profiles);
     return view('admin.profiles.show-profiles', compact('profiles'));
    }   
 

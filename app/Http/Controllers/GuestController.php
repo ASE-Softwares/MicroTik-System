@@ -72,8 +72,14 @@ class GuestController extends Controller
       $Items = $CallbackMetadata['Item'];
       $amount = $Items[0]['Value'];
       $MpesaReceiptNumber = $Items[1]['Value'];      
-      $TransactionDate = strval($Items[2]['Value']);
-      $PhoneNumber = strval($Items[3]['Value']);
+      
+      if (env('BUSINESS_NUMBER')!=174379) {
+        $TransactionDate = strval($Items[3]['Value']);
+        $PhoneNumber = strval($Items[4]['Value']);
+      }else{
+        $TransactionDate = strval($Items[2]['Value']);
+        $PhoneNumber = strval($Items[3]['Value']);
+      }
 
       $create_transaction = new MpesaTransaction;
       $create_transaction->amount= $amount;
@@ -90,6 +96,8 @@ class GuestController extends Controller
       }
       else{
         $create_transaction->status = "Not Conected To Network, Error! Missing Profile ";
+
+        //alert admin of a payment that has an issue.
       }
 
       $create_transaction->save();

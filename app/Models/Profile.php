@@ -13,7 +13,8 @@ class Profile extends Model
 	'shared-users',
 	'rate-limit',
 	'price',
-	'description'
+	'description',
+	'keepalive-timeout'
 
 ];
 

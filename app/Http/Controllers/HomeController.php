@@ -38,8 +38,9 @@ class HomeController extends Controller
         if ($logged_in_to_router) {
             $todayEarnings = $this->calculateDailyTotal(); 
             $thisMonthEarnings = $this->calculateThisMonthTotal();
+            $thisYearEarnings = $this->calculateThisYearTotal();
 
-            return view('home', compact('todayEarnings','thisMonthEarnings'));
+            return view('home', compact('todayEarnings','thisMonthEarnings','thisYearEarnings'));
         }else{
             return redirect(route('router_login'));
         }
@@ -101,10 +102,14 @@ class HomeController extends Controller
     }
 
     public function calculateDailyTotal(){
-        return MpesaTransaction::whereDate('created_at', Carbon::today())->sum('amount');
+        return MpesaTransaction::whereDay('created_at', '=', date('d'))->sum('amount');
     }
 
     public function calculateThisMonthTotal(){
-        return MpesaTransaction::whereDate('created_at', Carbon::now()->month)->sum('amount');
+        return MpesaTransaction::whereMonth('created_at', '=', date('m'))->sum('amount');
+    }
+
+    public function calculateThisYearTotal(){
+        return MpesaTransaction::whereYear('created_at', '=', date('Y'))->sum('amount');
     }
 }

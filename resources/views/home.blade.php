@@ -57,8 +57,8 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Earnings (Annually)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">Ksh. 5,160,000</div>
+                            Earnings (Annually) This Year</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">Ksh. {{$thisYearEarnings}}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-calendar fa-2x text-gray-300"></i>

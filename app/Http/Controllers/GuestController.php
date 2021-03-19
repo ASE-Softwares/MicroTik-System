@@ -39,12 +39,13 @@ class GuestController extends Controller
 
    public function purchase(Request $request){
       $data = $this->validate($request, [
-        'phone_number'=>['required','numeric','digits:12','starts_with:254'],
+        'phone_number'=>['required','numeric','digits:10','starts_with:07,01'],
         'id'=>['exists:profiles','required'],        
       ]);
       $package = Profile::find($data['id']);
       $amount=$package->price;
-      $msisdn=$data['phone_number'];     
+      $pnb = ltrim($data['phone_number'], '0');
+      $msisdn='254'.$pnb;    
       $TransactionDesc='Payment for '.$package->name.' package';
       $newTrial = new Mpesa;
       $response = $newTrial->sendSTKPush($amount, $msisdn, $TransactionDesc);

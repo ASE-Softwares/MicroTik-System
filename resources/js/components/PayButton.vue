@@ -5,15 +5,14 @@
 		 <span class="fas fa-money-check-alt" ></span> Purchase </button>
 		 <Modal v-model="purchaseModal" :closable="false" :mask-closable="false" :width="85">
 		 	<div slot="header">
-		 		<h3 class="text-center">Purchase Subscription</h3>
-		 		<p>Proceed to purchase ASE Wireless {{selected_package.name}} Hotspot Package</p>
+		 		<h3 class="text-center">Purchase {{selected_package.name}} Subscription</h3>
 		 	</div>
 		 	<div class="row justify-content-center">
 		 		<div class="col-sm-9">
 		 			<div class="input-group">
-		 				<input class="input--style-2" type="text" placeholder="Enter Your Phone Number: " v-model="data.phone_number">
+		 				<input class="input--style-2" type="number" placeholder="Enter Your Phone Number: " v-model="data.phone_number">
 		 			</div>
-		 			<small class="font-weight-bold  text-info">Enter Your Phone Number In the Format <strong class="text-danger">254XXXXXXXXX</strong></small>
+		 			<small class="font-weight-bold  text-info">Enter Your Phone Number In the Format <strong class="text-danger">07XXXXXXXX</strong></small>
 		 			<div>{{data.phone_number}}</div>
 		 		</div>
 		 	</div>

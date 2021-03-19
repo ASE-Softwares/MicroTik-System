@@ -12,6 +12,9 @@
             <div class="card-heading"></div>
             <div class="card-body">
                 <h2 class="title">Router Login</h2>
+                @if(session('error_message'))
+                                       <h4 class="text-danger"><b> {{session('error_message')}} </b></h4>
+                               @endif
 
                 @if(session('error'))
                         <p class="text-danger"><b> {{session('error')}} </b></p>

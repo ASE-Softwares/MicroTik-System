@@ -28,7 +28,9 @@ class AdminController extends Controller
           $this->discover_microtik();      
 
          } catch (\Exception $e) {
-            dd($e);
+          session()->forget('router_session');
+          return redirect(route('router_login'))->with('error_message','Router Disconnected! Please Check if its connected');
+
         }      
      }
 

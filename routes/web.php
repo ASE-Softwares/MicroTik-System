@@ -28,11 +28,20 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('router/auto_login/{microtik}',[App\Http\Controllers\HomeController::class, 'router_auto_login'])->name('router_auto_login');
 	Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+    // profiles
 	Route::get('/add_profiles', [App\Http\Controllers\AdminController::class, 'showForm'])->name('showForm');
 	Route::post('/add_profiles', [App\Http\Controllers\AdminController::class, 'newProfile'])->name('newProfile');
 	Route::get('/view_profiles', [App\Http\Controllers\AdminController::class, 'listProfiles'])->name('listProfiles');
+    // delele profil
+    // Route::get('/', [App\Http\Controllers\AdminController::class, 'deleteProfile'])->name("deleteProfiles");
+    // edit profile
+    // Route::get('', [App\Http\Controllers\AdminController::class, 'editProfile'])->name('editProfile');
+
+
+
 
     Route::get('/router_login', [App\Http\Controllers\HomeController::class, 'routerLogin'])->name('router_login');
+    Route::post('addRouter', [App\Http\Controllers\HomeController::class, 'add_router'])->name('add_router');
     Route::post('/router_verify', [App\Http\Controllers\HomeController::class, 'init'])->name('router_verify');
 
 
@@ -43,6 +52,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('edit/{user}', [App\Http\Controllers\AdminAnyController::class, 'edit'])->name('admin.edit');
     Route::get('delete', [\App\Http\Controllers\AdminAnyController::class, 'destroy'])->name('admin.delete');
     // Route::get('show/{user}', [App\Http\Controllers\AdminAnyController::class, 'show'])->name('admin.show');
+
+    // get all users
+    Route::get('users', [App\Http\Controllers\AdminController::class, 'hotspot_users'])->name('admin.allUsers');
 
     Route::post('/change-router', [App\Http\Controllers\AdminAnyController::class, 'changeRouter'])->name('change-router');
     

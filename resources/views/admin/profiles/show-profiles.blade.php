@@ -53,7 +53,26 @@
                             <td> {{ isset($item["transparent-proxy"])? $item["transparent-proxy"]: "" }} </td>
                             <td> {{ isset($item["mac-cookie-timeout"])? $item["mac-cookie-timeout"]: "" }} </td>
                             <td>
-                                <a href="#"> </a>
+                                <div class="row">
+                                    <div class="pl-3">
+                                        <a href="">
+                                            <i class="fas fa-plus text-success"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="pl-3">
+                                        <a href="">
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="pl-3">
+                                        <a href="">
+                                            <i class="fas fa-trash-alt text-danger"></i>
+                                        </a>
+                                    </div>
+                                    
+                                </div>
                             </td>
                         </tr>
 

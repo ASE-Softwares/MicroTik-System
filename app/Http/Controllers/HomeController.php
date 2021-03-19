@@ -41,8 +41,8 @@ class HomeController extends Controller
 
             return view('home', compact('todayEarnings','thisMonthEarnings'));
         }else{
-            // return redirect(route('router_login'));
-            return view('home');
+            return redirect(route('router_login'));
+            // return view('home');
 
         }
 
@@ -100,6 +100,21 @@ class HomeController extends Controller
         }        
         session(['router_session' => $router]);
         return redirect(route('home'));
+    }
+
+    public function add_router(Request $request) {
+        // dd($request->all());
+        $data = $this->validate($request, [
+            'ip'=>'required|string|unique:micro_tiks',
+            'username'=>'required|string',
+            'password'=>'required|string',
+            'port'=>'required|numeric',
+            'name'=>'required|string',
+            'location'=>'required|string'
+        ]);
+
+        $newResponse = MicroTik::create($data);
+        return redirect(route('router_login'))->with('success','Router added successfully');
     }
 
     public function calculateDailyTotal(){

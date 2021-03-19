@@ -149,7 +149,7 @@ class AdminController extends Controller
            'shared-users'=>$data['shared-users'],
            'rate-limit'=>$data['rate-limit'],
            'price'=>$data['price'],
-           'micro_tik_id'=>$microtic,
+           'micro_tik_id'=>$microtik,
            'description'=>$descripJSON
        ]);
 
@@ -175,10 +175,12 @@ class AdminController extends Controller
 
    // Get users existing in hotspot
    public function hotspot_users(){
-     $query = new RouterOS\Query('/ip/hotspot/user/print'); 
+     $query = new RouterOS\Query('/ip/hotspot/user/print');
      $this->connection();        
      $userProfiles = $this->client->query($query)->read(); 
-     return $userProfiles;
+
+    //  return $userProfiles;
+    return view('admin.users.view_users', compact('userProfiles'));
    }
 
    public function logs(){

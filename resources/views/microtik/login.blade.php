@@ -16,7 +16,7 @@
                 @if(session('error'))
                         <p class="text-danger"><b> {{session('error')}} </b></p>
                 @endif
-                <form method="POST" action="{{ route("router_verify") }}">
+                <form method="POST" action="{{ route("add_router") }}">
 
                     @csrf 
                     <div class="input-group">
@@ -50,9 +50,27 @@
                             <span class="text-danger font-weight-bold">{{$message}}</span>
                         @enderror
                     </div>
+                    
+                    <div class="input-group">
+                        <input class="input--style-2" type="text" placeholder="Name of router" name="name" value={{ @old('name') }}>
+
+                        @error('name')
+                            <span class="text-danger font-weight-bold">{{$message}}</span>
+                        @enderror
+                    </div>
+
+                    <div class="input-group">
+                        <input class="input--style-2" type="text" placeholder="Location" name="location" value={{ @old('location') }}>
+
+                        @error('location')
+                            <span class="text-danger font-weight-bold">{{$message}}</span>
+                        @enderror
+                    </div>
 
                     <div class="p-t-30">
-                        <button class="btn btn--radius btn--green" type="submit">Proceed</button>
+                        <button class="btn btn--radius btn--green" type="submit">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
                     </div>
                 </form>
             </div>

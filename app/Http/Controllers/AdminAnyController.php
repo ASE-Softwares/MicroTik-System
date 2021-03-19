@@ -116,4 +116,5 @@ class AdminAnyController extends Controller
             return redirect(route('router_login'));
         }
     }
+    
 }

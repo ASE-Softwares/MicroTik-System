@@ -56,13 +56,6 @@
                                             <i class="fas fa-pen"></i>
                                         </a>
                                     </div>
-                                    @if (Auth::user()->name != $user->name)
-                                        <div class="pl-3">
-                                            <a href="">
-                                                <i class="fas fa-trash-alt text-danger"></i>
-                                            </a>
-                                        </div>
-                                    @endif
                                     
                                 </div>
 

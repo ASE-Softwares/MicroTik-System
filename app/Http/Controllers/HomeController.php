@@ -42,7 +42,7 @@ class HomeController extends Controller
 
             return view('home', compact('todayEarnings','thisMonthEarnings','thisYearEarnings'));
         }else{
-            return redirect(route('router_login'));
+           return redirect(route('router_login'));
             // return view('home');
 
         }

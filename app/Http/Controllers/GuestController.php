@@ -82,6 +82,12 @@ class GuestController extends Controller
         $PhoneNumber = strval($Items[3]['Value']);
       }
 
+      $PhoneNumber = ltrim($PhoneNumber, '254');
+
+      $PhoneNumber = '0'.$PhoneNumber;
+
+
+
       $create_transaction = new MpesaTransaction;
       $create_transaction->amount= $amount;
       $create_transaction->MpesaReceiptNumber=$MpesaReceiptNumber;

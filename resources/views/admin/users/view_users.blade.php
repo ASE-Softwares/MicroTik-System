@@ -40,11 +40,15 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    @foreach ($userProfiles as $user)
+                    @php 
+    dd($active_hotspot_users);
+                    @endphp
+
+                    @foreach ($active_hotspot_users as $user)
                         
                         <tr>
                             <td class="text-info"> 
-                                {{ isset($user["name"])? ucfirst($user["name"]): "" }}
+                                {{ isset($user["user"])? ucfirst($user["user"]): "" }}
                             </td>
                             <td> {{ isset($user["uptime"])? $user["uptime"]: "" }} </td>
                             <td> {{ isset($user["bytes-in"])? $user["bytes-in"]: "" }} </td>

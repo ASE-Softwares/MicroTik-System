@@ -138,7 +138,7 @@ class AdminController extends Controller
          (new RouterOs\Query('/ip/hotspot/user/profile/add'))
              ->equal('name', $data['name'])
              ->equal('shared-users',$data['shared-users'])
-             ->equal('keepalive-timeout',$data['keepalive-timeout'])
+             ->equal('session-timeout',$data['keepalive-timeout'])
              ->equal('rate-limit', $data['rate-limit']);
               // Add user
        $this->connection();
@@ -196,7 +196,7 @@ class AdminController extends Controller
     $query = new RouterOS\Query('/ip/hotspot/active/print'); 
     $this->connection();        
     $active_hotspot_users = $this->client->query($query)->read(); 
-    return $active_hotspot_users;
+    return view('admin.users.view_users', compact('active_hotspot_users'));
    }
 
    public function interfaces(){

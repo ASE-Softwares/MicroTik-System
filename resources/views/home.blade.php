@@ -9,8 +9,72 @@
     <script src="{{ asset('js/admin/admin-2.js') }}"></script>
 
     <script src="{{ asset('js/admin/Chart.js') }}"></script>
-    <script scr="{{ asset('js/admin/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('js/admin/chart-pie-demo.js') }}"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    {{-- <script scr="{{ asset('js/admin/chart-area-demo.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/admin/chart-pie-demo.js') }}"></script> --}}
+
+    <script>
+
+
+        window.onload = function () {
+        
+        $.get('/admin/allUsers', {name:'Interfaces'}, function (data, textStatus, jqXHR) {
+            
+        });
+        
+        var dps = []; // dataPoints
+        var chart = new CanvasJS.Chart("chartContainer", {
+            title :{
+                text: "Traffic"
+            },
+            axisX: {
+                title: "Time"
+            },
+            axisY: {
+                title: "Percentage",
+                prefix: "Kbps ",
+                includeZero: true
+            },
+            data: [{
+                type: "line",
+                connectNullData: true,
+                xValueType: "dateTime",
+                xValueFormatString: "DD MMM hh:mm TT",
+		        yValueFormatString: "#,##0.##\"%\"",
+                dataPoints: dps
+            }]
+        });
+
+        var xVal = 0;
+        var yVal = 100; 
+        var updateInterval = 1000;
+        var dataLength = 20; // number of dataPoints visible at any point
+
+        var updateChart = function (count) {
+
+            count = count || 1;
+
+            for (var j = 0; j < count; j++) {
+                yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
+                dps.push({
+                    x: xVal,
+                    y: yVal
+                });
+                xVal++;
+            }
+
+            if (dps.length > dataLength) {
+                dps.shift();
+            }
+
+            chart.render();
+        };
+
+        updateChart(dataLength);
+        setInterval(function(){updateChart()}, updateInterval);
+
+        }
+    </script>
     
 @endsection
 
@@ -63,7 +127,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                             Earnings (Annually) This Year</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">Ksh. {{$thisYearEarnings}}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">Ksh. {{ $thisYearEarnings }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -83,7 +147,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                             New Users</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -103,24 +167,26 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Traffic Overview</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                             <div class="dropdown-header">Interfaces:</div>
-                            {{-- @foreach (\App\Http\Controllers\AdminControllerinterfaces() as $interface )
-                                <a class="dropdown-item" href="#">{{ $interface }}</a>
-                            @endforeach --}}
+                        
+                            @foreach ( $interfaces as $interface )
+                                <span class="dropdown-item" id="{{ $interface['.id'] }}">{{ $interface['name'] }}</span>
+                            @endforeach
                         </div>
                     </div>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <div id="chartContainer" style="height: 370px; width:100%;"></div>
+                    {{-- <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                         <canvas id="myAreaChart" width="457" height="400" class="chartjs-render-monitor" style="display: block; height: 320px; width: 366px;"></canvas>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -149,9 +215,9 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                             <div class="dropdown-header">Interfaces:</div>
-                            {{-- @foreach (\App\Http\Controllers\AdminControllerinterfaces() as $interface )
-                                <a class="dropdown-item" href="#">{{ $interface }}</a>
-                            @endforeach --}}
+                            @foreach ($interfaces as $interface )
+                                <a class="dropdown-item" href="{{ $interface['name'] }}">{{ $interface['name'] }}</a>
+                            @endforeach
                         </div>
                     </div>
                 </div>

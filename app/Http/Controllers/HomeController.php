@@ -7,6 +7,8 @@ use \RouterOS;
 use App\Models\MicroTik;
 use App\Models\MpesaTransaction;
 use Carbon\Carbon;
+use App\Http\Controllers\AdminController;
+use App\Http\Middleware\Admin;
 
 class HomeController extends Controller
 {
@@ -39,12 +41,12 @@ class HomeController extends Controller
             $todayEarnings = $this->calculateDailyTotal(); 
             $thisMonthEarnings = $this->calculateThisMonthTotal();
             $thisYearEarnings = $this->calculateThisYearTotal();
+            $allInterfaces = new AdminController;
+            $interfaces = $allInterfaces->interfaces();
 
-            return view('home', compact('todayEarnings','thisMonthEarnings','thisYearEarnings'));
-        }else{
-           return redirect(route('router_login'));
-            // return view('home');
-
+            return view('home', compact('todayEarnings','thisMonthEarnings','thisYearEarnings', 'interfaces'));
+        }else{         
+            return redirect(route('router_login'));
         }
 
     }

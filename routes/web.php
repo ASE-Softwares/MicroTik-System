@@ -57,6 +57,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('users', [App\Http\Controllers\AdminController::class, 'hotspot_users'])->name('admin.allUsers');
 
     Route::post('/change-router', [App\Http\Controllers\AdminAnyController::class, 'changeRouter'])->name('change-router');
+
+    // get interfaces and their data
+    Route::get('interfaces', [App\Http\Controllers\AdminController::class, 'interfaces']);
+    Route::get('interfaces/{id}', [App\Http\Controllers\AdminController::class, 'getInterfaceData']);
     
 });
 

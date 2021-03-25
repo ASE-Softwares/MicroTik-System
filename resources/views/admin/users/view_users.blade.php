@@ -4,6 +4,10 @@
     All Users
 @endsection
 
+@section('customStyle')
+    <script src="{{ asset('js/admin/datatable.js') }}"></script>
+@endsection
+
 @section('contentMain')
 
 <div class="card shadow mb-4">
@@ -40,9 +44,10 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    @php 
-    dd($active_hotspot_users);
-                    @endphp
+                {{--     @php 
+                        dd($active_hotspot_users);
+                    @endphp --}}
+
 
                     @foreach ($active_hotspot_users as $user)
                         

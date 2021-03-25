@@ -180,8 +180,7 @@ class AdminController extends Controller
      $query = new RouterOS\Query('/ip/hotspot/user/print');
      $this->connection();        
      $userProfiles = $this->client->query($query)->read(); 
-
-    //  return $userProfiles;
+     
     return view('admin.users.view_users', compact('userProfiles'));
    }
 
@@ -204,6 +203,11 @@ class AdminController extends Controller
     $this->connection();        
     $interfaces = $this->client->query($query)->read(); 
     return $interfaces;
+   }
+
+   public function getInterfaceData($id) {
+		$interfaces = $this->interfaces();
+		return $interfaces[$id];
    }
 
 

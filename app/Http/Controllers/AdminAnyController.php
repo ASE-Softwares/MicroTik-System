@@ -110,7 +110,7 @@ class AdminAnyController extends Controller
         }
         //if you logged in to router 
         if ($logged_in_to_router) {
-            $request()->session()->forget("router_session");
+            $request->session()->forget("router_session");
             return redirect(route('router_login'));
         }else{
             return redirect(route('router_login'));

@@ -45,9 +45,8 @@ class HomeController extends Controller
             $interfaces = $allInterfaces->interfaces();
 
             return view('home', compact('todayEarnings','thisMonthEarnings','thisYearEarnings', 'interfaces'));
-        }else{
+        }else{         
             return redirect(route('router_login'));
-
         }
 
     }

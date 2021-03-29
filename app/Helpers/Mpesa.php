@@ -49,7 +49,7 @@ class Mpesa
 		if ($env == 'sandbox') {
 			$url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
 		}else{
-			$url = "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
+			$url = "https://api.safaricom.co.ke/oauth/v1/generate";
 		}
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $url);

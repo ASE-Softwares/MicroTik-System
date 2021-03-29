@@ -75,8 +75,8 @@ class GuestController extends Controller
       $MpesaReceiptNumber = $Items[1]['Value'];      
       
       if (env('BUSINESS_NUMBER')!=174379) {
-        $TransactionDate = strval($Items[3]['Value']);
-        $PhoneNumber = strval($Items[4]['Value']);
+        $TransactionDate = strval($Items[2]['Value']);
+        $PhoneNumber = strval($Items[3]['Value']);
       }else{
         $TransactionDate = strval($Items[2]['Value']);
         $PhoneNumber = strval($Items[3]['Value']);

@@ -14,60 +14,63 @@
     {{-- <script src="{{ asset('js/admin/chart-pie-demo.js') }}"></script> --}}
 
     <script>
+        let interface = "wlan1";
+
+        function activeInterface(interfaceName) {
+            interface = interfaceName;
+
+        };
 
 
         window.onload = function () {
         
-        $.get('/admin/allUsers', {name:'Interfaces'}, function (data, textStatus, jqXHR) {
             
-        });
-        
-        var dps = []; // dataPoints
-        var chart = new CanvasJS.Chart("chartContainer", {
-            title :{
-                text: "Traffic"
-            },
-            axisX: {
-                title: "Time"
-            },
-            axisY: {
-                title: "Percentage",
-                prefix: "Kbps ",
-                includeZero: true
-            },
-            data: [{
-                type: "line",
-                connectNullData: true,
-                xValueType: "dateTime",
-                xValueFormatString: "DD MMM hh:mm TT",
-		        yValueFormatString: "#,##0.##\"%\"",
-                dataPoints: dps
-            }]
-        });
+            var dps = []; // dataPoints
+            var chart = new CanvasJS.Chart("chartContainer", {
+                title :{
+                    text: "Traffic"
+                },
+                axisX: {
+                    title: "Time"
+                },
+                axisY: {
+                    title: "Percentage",
+                    prefix: "Kbps ",
+                    includeZero: true
+                },
+                data: [{
+                    type: "line",
+                    connectNullData: true,
+                    xValueType: "dateTime",
+                    xValueFormatString: "DD MMM hh:mm TT",
+                    yValueFormatString: "#,##0.##\"%\"",
+                    dataPoints: dps
+                }]
+            });
 
-        var xVal = 0;
-        var yVal = 100; 
-        var updateInterval = 1000;
-        var dataLength = 20; // number of dataPoints visible at any point
+            var xVal = 0;
+            var yVal = 100; 
+            var updateInterval = 1000;
+            var dataLength = 20; // number of dataPoints visible at any point
 
-        var updateChart = function (count) {
+            var updateChart = function (count) {
 
-            count = count || 1;
+                count = count || 1;
 
-            for (var j = 0; j < count; j++) {
-                yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
-                dps.push({
-                    x: xVal,
-                    y: yVal
-                });
-                xVal++;
-            }
+                for (var j = 0; j < count; j++) {
+                    yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
+                    dps.push({
+                        x: xVal,
+                        y: yVal
+                    });
+                    xVal++;
+                }
 
-            if (dps.length > dataLength) {
-                dps.shift();
-            }
+                if (dps.length > dataLength) {
+                    dps.shift();
+                }
 
-            chart.render();
+                chart.render();
         };
 
         updateChart(dataLength);
@@ -176,7 +179,7 @@
                             <div class="dropdown-header">Interfaces:</div>
                         
                             @foreach ( $interfaces as $interface )
-                                <span class="dropdown-item" id="{{ $interface['.id'] }}">{{ $interface['name'] }}</span>
+                                <span class="dropdown-item" id="{{ $interface['name'] }}" onclick="activeInterface(this.id)">{{ $interface['name'] }}</span>
                             @endforeach
                         </div>
                     </div>
@@ -216,7 +219,7 @@
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                             <div class="dropdown-header">Interfaces:</div>
                             @foreach ($interfaces as $interface )
-                                <a class="dropdown-item" href="{{ $interface['name'] }}">{{ $interface['name'] }}</a>
+                                <span class="dropdown-item" id="{{ $interface['name'] }}">{{ $interface['name'] }}</span>
                             @endforeach
                         </div>
                     </div>

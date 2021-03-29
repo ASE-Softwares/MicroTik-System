@@ -33,7 +33,7 @@ class Mpesa
 		 	 $this->base_url = env('APP_URL');
 		 	 $this->url = $this->base_url.'/mpesa_response';
 		 }else{
-		 	$this->base_url = 'http://eb3beb16d5dc.ngrok.io';
+		 	$this->base_url = env('NGROK_URL');
 		 	$this->url = $this->base_url.'/mpesa_response';
 		 }
 		 $this->validation_url = $this->base_url.'/validation';

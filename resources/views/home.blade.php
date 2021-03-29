@@ -18,7 +18,6 @@
 
         function activeInterface(interfaceName) {
             interface = interfaceName;
-
         };
 
 
@@ -76,7 +75,7 @@
         updateChart(dataLength);
         setInterval(function(){updateChart()}, updateInterval);
 
-        }
+    }
     </script>
     
 @endsection

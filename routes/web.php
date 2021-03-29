@@ -54,7 +54,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // Route::get('show/{user}', [App\Http\Controllers\AdminAnyController::class, 'show'])->name('admin.show');
 
     // get all users
-    Route::get('users', [App\Http\Controllers\AdminController::class, 'hotspot_users'])->name('admin.allUsers');
+    Route::get('users', [App\Http\Controllers\AdminController::class, 'active_hotspot_users'])->name('admin.allUsers');
 
     Route::post('/change-router', [App\Http\Controllers\AdminAnyController::class, 'changeRouter'])->name('change-router');
 

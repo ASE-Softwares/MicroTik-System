@@ -4,6 +4,8 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use App\Models\MpesaTransaction;
+use Illuminate\Http\Request;
+
 
 /**
  * 
@@ -26,7 +28,7 @@ class Mpesa
 		 $this->short_code = env('TILL_NUMBER',null);
 		 $this->consumer_secret = env('CONSUMER_SECRET',null);
 		 $this->consumer_key = env('CONSUMER_KEY',null);
-		 $this->env = env('MPESA_ENV',null);		 	 
+		 $this->env = env('MPESA_ENV','production');		 	 
 		 $this->passkey = env('PASS_KEY');		 
 		 $this->app_env = env('APP_ENV');
 		 if ($this->app_env == 'production') {
@@ -44,23 +46,29 @@ class Mpesa
 	public function getAccessToken(){		
 		$consumer_key=$this->consumer_key;
 		$consumer_secret=$this->consumer_secret;
+
 		$credentials = base64_encode($consumer_key.":".$consumer_secret);
+
 		$env = $this->env;
 		if ($env == 'sandbox') {
 			$url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
 		}else{
-			$url = "https://api.safaricom.co.ke/oauth/v1/generate";
+			$url = "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
 		}
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, array("Authorization: Basic ".$credentials));
-		curl_setopt($curl, CURLOPT_HEADER,false);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$curl_response = curl_exec($curl);
-		$access_token=json_decode($curl_response);
-		if ($access_token) {			
-			return $this->access_token = $access_token->access_token;
+		  $credentials = base64_encode($consumer_key.':'.$consumer_secret);
+		  curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Basic '.$credentials)); //setting a custom header
+		  curl_setopt($curl, CURLOPT_HEADER, true);
+		  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		  $curl_response = curl_exec($curl);
+		  if ($curl_response) {
+			$header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+			$header = substr($curl_response, 0, $header_size);
+			$body = substr($curl_response, $header_size);
+			$r = json_decode($body, true);
+			return $r['access_token'];
 		}else{
 			return false;
 		}

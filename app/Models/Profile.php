@@ -14,9 +14,13 @@ class Profile extends Model
 	'rate-limit',
 	'price',
 	'description',
-	'keepalive-timeout'
+	'keepalive-timeout',
+	'on_offer'
 
 ];
+ protected $casts = [
+        'on_offer' => 'boolean',
+    ];
 
 	public function micro_tik(){
 		return $this->belongsTo(MicroTik::class);

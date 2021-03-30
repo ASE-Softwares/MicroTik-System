@@ -24,5 +24,5 @@ class Profile extends Model
 
 	public function micro_tik(){
 		return $this->belongsTo(MicroTik::class);
-	}
+	}	
 }

@@ -46,7 +46,7 @@ class GuestController extends Controller
       $amount=$package->price;
       $pnb = ltrim($data['phone_number'], '0');
       $msisdn='254'.$pnb;    
-      $TransactionDesc='Payment for '.$package->name.' package';
+      $TransactionDesc=$package->name;
       $newTrial = new Mpesa;
       $response = $newTrial->sendSTKPush($amount, $msisdn, $TransactionDesc);
       return $response;
@@ -74,13 +74,16 @@ class GuestController extends Controller
       $amount = $Items[0]['Value'];
       $MpesaReceiptNumber = $Items[1]['Value'];      
       
-      if (env('BUSINESS_NUMBER')!=174379) {
-        $TransactionDate = strval($Items[2]['Value']);
-        $PhoneNumber = strval($Items[3]['Value']);
+      if (strval($Items[2]['Value'])=='Balance') {
+        $TransactionDate = strval($Items[3]['Value']);
+        $PhoneNumber = strval($Items[4]['Value']);
       }else{
         $TransactionDate = strval($Items[2]['Value']);
         $PhoneNumber = strval($Items[3]['Value']);
       }
+     
+      
+      
 
       $PhoneNumber = ltrim($PhoneNumber, '254');
 

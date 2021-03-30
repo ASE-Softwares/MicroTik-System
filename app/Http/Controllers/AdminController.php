@@ -123,7 +123,7 @@ class AdminController extends Controller
 // Create and save a profile to router and database
  public function newProfile(Request $request){
      $data = $this->validate($request,[
-       'name'=>'required|string|unique:profiles',
+       'name'=>'required|string|unique:profiles|max:10',
        'shared-users'=>'required|numeric',
        'rate-limit' =>'nullable',
        'price'=>'required|numeric',

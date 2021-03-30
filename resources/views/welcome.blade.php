@@ -127,5 +127,6 @@
     </body>
   
 </html>
+{{--We could add a row that says in each package $package->micro_tik->location --}}
 
 

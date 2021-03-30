@@ -106,7 +106,7 @@ class Mpesa
 		    'PartyB' => $this->short_code,
 		    'PhoneNumber' => $phone_number, // replace this with your phone number
 		    'CallBackURL' => $this->url,
-		    'AccountReference' => "ASE HOTSPOT",
+		    'AccountReference' => "ASE_HOTSPOT",
 		    'TransactionDesc' => $TransactionDesc,
 		     ];
 		     $data_string = json_encode($curl_post_data);

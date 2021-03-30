@@ -46,7 +46,7 @@ class GuestController extends Controller
       $amount=$package->price;
       $pnb = ltrim($data['phone_number'], '0');
       $msisdn='254'.$pnb;    
-      $TransactionDesc='Payment for '.$package->name.' package';
+      $TransactionDesc=$package->name;
       $newTrial = new Mpesa;
       $response = $newTrial->sendSTKPush($amount, $msisdn, $TransactionDesc);
       return $response;

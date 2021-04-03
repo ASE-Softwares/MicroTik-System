@@ -18,10 +18,10 @@ class AdminController extends Controller
         $data = session()->get('router_session');
         $this->session_data = $data;
         $config = new \RouterOS\Config([
-            'host' => $data['ip'],
-            'user' => $data['username'],
-            'pass' => $data['password'],
-            'port' => intval($data['port']),
+          'host' => $data['ip'],
+          'user' => $data['username'],
+          'pass' => $data['password'],
+          'port' => intval($data['port']),
         ]);
         try {
           $this->client = new RouterOS\Client($config);

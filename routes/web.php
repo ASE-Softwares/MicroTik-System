@@ -26,12 +26,12 @@ Route::post('/confirmation',[App\Helpers\Mpesa::class, 'mpesaConfirmation'])->na
 
 Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('router/auto_login/{microtik}',[App\Http\Controllers\HomeController::class, 'router_auto_login'])->name('router_auto_login');
-	Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     // profiles
-	Route::get('/add_profiles', [App\Http\Controllers\AdminController::class, 'showForm'])->name('showForm');
-	Route::post('/add_profiles', [App\Http\Controllers\AdminController::class, 'newProfile'])->name('newProfile');
-	Route::get('/view_profiles', [App\Http\Controllers\AdminController::class, 'listProfiles'])->name('listProfiles');
+    Route::get('/add_profiles', [App\Http\Controllers\AdminController::class, 'showForm'])->name('showForm');
+    Route::post('/add_profiles', [App\Http\Controllers\AdminController::class, 'newProfile'])->name('newProfile');
+    Route::get('/view_profiles', [App\Http\Controllers\AdminController::class, 'listProfiles'])->name('listProfiles');
     // delele profil
     // Route::get('/', [App\Http\Controllers\AdminController::class, 'deleteProfile'])->name("deleteProfiles");
     // edit profile
@@ -61,6 +61,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // get interfaces and their data
     Route::get('interfaces', [App\Http\Controllers\AdminController::class, 'interfaces']);
     Route::get('interfaces/{id}', [App\Http\Controllers\AdminController::class, 'getInterfaceData']);
+
+    //Help
+    Route::get('mpesa/help/form',[App\Http\Controllers\HelpController::class, 'raw_transaction'])->name('admin.raw_purchase.form'); 
+    Route::post('mpesa/help',[App\Http\Controllers\HelpController::class, 'create_subscription'])->name('admin.raw_purchase');
     
 });
 

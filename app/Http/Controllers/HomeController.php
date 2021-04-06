@@ -78,7 +78,7 @@ class HomeController extends Controller
         try {
           $client = new RouterOS\Client($config);            
       } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Hello '.auth()->user()->name.', For Some reason, We Could not login you  to the router'. $e);
+        return redirect()->back()->with('error', 'Hello '.auth()->user()->name.', For Some reason, We Could not login you  to the router with'. $e);
     }        
     session(['router_session' => $data]);
     return redirect(route('home'));

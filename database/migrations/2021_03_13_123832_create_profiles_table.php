@@ -20,6 +20,7 @@ class CreateProfilesTable extends Migration
             $table->string('shared-users');
             $table->string('rate-limit')->nullable();
             $table->string('price');
+            $table->integer('on_offer')->default(0);
             $table->json('description')->nullable();
             $table->string('keepalive-timeout')->nullable();
             $table->unsignedBigInteger('micro_tik_id')->nullable();

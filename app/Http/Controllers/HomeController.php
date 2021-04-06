@@ -86,20 +86,20 @@ class HomeController extends Controller
 }
 public function router_auto_login(Request $request, MicroTik $microtik){
     if($request->session()->exists('router_session')){
-     $request->session()->forget('router_session');
- }
- $router = $microtik;
- $config = new \RouterOS\Config([
+       $request->session()->forget('router_session');
+   }
+   $router = $microtik;
+   $config = new \RouterOS\Config([
     'host' => $router->ip,
     'user' => $router->username,
     'pass' => $router->password,
     'port' => intval($router->port),
 ]);
 
- try {
-  $client = new RouterOS\Client($config);            
-} catch (\Exception $e) {
-    return redirect()->back()->with('error', 'Hello '.auth()->user()->name.', For Some reason, We Could not login you  to the'. $router->name.' router');
+   try {
+      $client = new RouterOS\Client($config);            
+  } catch (\Exception $e) {
+    return redirect()->back()->with('error', 'Hello '.auth()->user()->name.', For Some reason, We Could not login you  to the'. $router->name.' router with error'. $e);
 }        
 session(['router_session' => $router]);
 return redirect(route('home'));

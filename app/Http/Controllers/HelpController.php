@@ -7,6 +7,7 @@ use RouterOS;
 use Carbon\Carbon;
 use App\Models\Profile;
 use App\Models\MpesaTransaction;
+use App\Models\MicroTik;
 
 class HelpController extends Controller
 {
@@ -69,27 +70,27 @@ class HelpController extends Controller
 		$profile = Profile::where('price', $data['amount'])->first();
 		if ($profile) {
 	    //create a user
-			$res = $this->create_user($PhoneNumber, $MpesaReceiptNumber, $profile->name);
+			$res = $this->create_user($data['PhoneNumber'], $data['MpesaReceiptNumber'], $profile->name);
 			if ($res == true) {
 				$create_transaction->status = "Conected To Network SuccessFully";
 			}else{
-				$create_transaction->status = "Not Conected To Network, Error! Router Missing";
+				return redirect()->back()->with('success','Not Conected To Network, Error! Router Missing');				
 			}
 		}
 		else{
-			$create_transaction->status = "Not Conected To Network, Error! Missing Profile ";
-
-	    //alert admin of a payment that has an issue.
+			return redirect()->back()->with('success','Not Conected To Network, Error! Missing Profile ');
 		}
 
 		$create_transaction->save();
+		$create_transaction->fresh();
 	  // Delete the raw response after successfully recorded it.		
-		return redirect()->back()->with('success','Transaction Recorded and User Added SuccessFully');
+		return redirect()->back()->with('success',$create_transaction->status);
 
 		
 	}
 
 	public function create_user($name, $password, $profile){
+		$this->connection();
 		$query = (new RouterOs\Query('/ip/hotspot/user/add'))
 		->equal('name', $name)
 		->equal('password',$password)

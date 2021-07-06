@@ -22,61 +22,60 @@ class AdminController extends Controller
           'user' => $data['username'],
           'pass' => $data['password'],
           'port' => intval($data['port']),
-        ]);
+      ]);
         try {
           $this->client = new RouterOS\Client($config);
-          $this->discover_microtik();      
-
-         } catch (\Exception $e) {
+          $this->discover_microtik();    
+      } catch (\Exception $e) {
           session()->forget('router_session');
           return redirect(route('router_login'))->with('error_message','Router Disconnected! Please Check if its connected');
 
-        }      
-     }
+      }      
+  }
 
-     public function discover_microtik(){
+  public function discover_microtik(){
       $data = session()->get('router_session');
       $router = MicroTik::where('ip', $data['ip'])->first();
       if ($router) {
         return $this->current_microtik_id = $router->id;        
-      }      
-     }
+    }      
+}
 
 	// Add user to the router os 
-    public function user($mac_address){
+public function user($mac_address){
     	// Build query
-    	$query =
-    	    (new Query('/ip/hotspot/ip-binding/add'))
-    	        ->equal('mac-address', $mac_address)
-    	        ->equal('type', 'bypassed')
-    	        ->equal('comment', 'testcomment');
+   $query =
+   (new Query('/ip/hotspot/ip-binding/add'))
+   ->equal('mac-address', $mac_address)
+   ->equal('type', 'bypassed')
+   ->equal('comment', 'testcomment');
 
     	// Add user
-      $this->connection();
-    	$out = $this->client->query($query)->read();
-    	return $out;
-    }
+   $this->connection();
+   $out = $this->client->query($query)->read();
+   return $out;
+}
 
 
 
-    public function remove_user($mac_address){  	
-    	$user = $this->get_user($mac_address);
-    	if (!empty($user[0]['.id'])) {
-    	    $userId     = $user[0]['.id'];
+public function remove_user($mac_address){  	
+   $user = $this->get_user($mac_address);
+   if (!empty($user[0]['.id'])) {
+       $userId     = $user[0]['.id'];
 
     	    // Remove MACa address
-    	    $query =
-    	        (new Query('/ip/hotspot/ip-binding/remove'))
-    	            ->equal('.id', $userId);
+       $query =
+       (new Query('/ip/hotspot/ip-binding/remove'))
+       ->equal('.id', $userId);
 
     	    // Remove user from RouterOS
-          $this->connection();
-    	    $removeUser = $this->client->query($query)->read();
-    	    return $removeUser;
-    	}else{
-    		return "User not Found";
-    	}
-    }
+       $this->connection();
+       $removeUser = $this->client->query($query)->read();
+       return $removeUser;
+   }else{
+      return "User not Found";
+  }
+}
 
 
 
@@ -86,15 +85,15 @@ class AdminController extends Controller
     */
     public function get_user($mac_address){
     	$query =
-    	    (new Query('/ip/hotspot/ip-binding/print'))
-    	        ->where('mac-address', $mac_address);
+       (new Query('/ip/hotspot/ip-binding/print'))
+       ->where('mac-address', $mac_address);
 
     	// Get user from RouterOS by query
-      $this->connection();
-    	$user = $this->client->query($query)->read();
+       $this->connection();
+       $user = $this->client->query($query)->read();
 
-    	return $user;
-    }
+       return $user;
+   }
 
 
 
@@ -102,86 +101,86 @@ class AdminController extends Controller
 
 
     // Profile functions
-    public function hotspot(){
-    	$client = new Client($config);
+   public function hotspot(){
+       $client = new Client($config);
     	// Build query for details about user profile
-    	$query = new Query('/ip/hotspot/user/profile/print');
+       $query = new Query('/ip/hotspot/user/profile/print');
     	// Add user
-      $this->connection();
-    	$out = $client->query($query)->read();
-    	return $out;
-    }
+       $this->connection();
+       $out = $client->query($query)->read();
+       return $out;
+   }
 
 
     /*
         show form for creating profile
     */
-    public function showForm(){                
-        return view('admin.profiles.create-profile');
-    }
+        public function showForm(){                
+            return view('admin.profiles.create-profile');
+        }
 
 // Create and save a profile to router and database
- public function newProfile(Request $request){
-     $data = $this->validate($request,[
-       'name'=>'required|string|unique:profiles|max:10',
-       'shared-users'=>'required|numeric',
-       'rate-limit' =>'nullable',
-       'price'=>'required|numeric',
-       'description'=>'nullable',
-       'keepalive-timeout'=>'required'
-     ]);
+        public function newProfile(Request $request){
+           $data = $this->validate($request,[
+             'name'=>'required|string|unique:profiles|max:10',
+             'shared-users'=>'required|numeric',
+             'rate-limit' =>'nullable',
+             'price'=>'required|numeric',
+             'description'=>'nullable',
+             'keepalive-timeout'=>'required'
+         ]);
 
-    $descrip = explode(";", $data['description']);
-    $descripJSON = json_encode($descrip);
+           $descrip = explode(";", $data['description']);
+           $descripJSON = json_encode($descrip);
      //save the profile to router
-     $query =
-         (new RouterOs\Query('/ip/hotspot/user/profile/add'))
-             ->equal('name', $data['name'])
-             ->equal('shared-users',$data['shared-users'])
-             ->equal('session-timeout',$data['keepalive-timeout'])
-             ->equal('rate-limit', $data['rate-limit']);
+           $query =
+           (new RouterOs\Query('/ip/hotspot/user/profile/add'))
+           ->equal('name', $data['name'])
+           ->equal('shared-users',$data['shared-users'])
+           ->equal('session-timeout',$data['keepalive-timeout'])
+           ->equal('rate-limit', $data['rate-limit']);
               // Add user
-       $this->connection();
-       $response =  $this->client->query($query)->read();
-       $this->discover_microtik();
+           $this->connection();
+           $response =  $this->client->query($query)->read();
+           $this->discover_microtik();
     //    dd($descripJSON);
        //extend the profile to database
-       $newResponse = Profile::create([
-           'name'=>$data['name'],
-           'shared-users'=>$data['shared-users'],
-           'rate-limit'=>$data['rate-limit'],
-           'price'=>$data['price'],
-           'keepalive-timeout'=>$data['keepalive-timeout'],
-           'micro_tik_id'=>$this->current_microtik_id,           
-           'description'=>$descripJSON
-       ]);
+           $newResponse = Profile::create([
+             'name'=>$data['name'],
+             'shared-users'=>$data['shared-users'],
+             'rate-limit'=>$data['rate-limit'],
+             'price'=>$data['price'],
+             'keepalive-timeout'=>$data['keepalive-timeout'],
+             'micro_tik_id'=>$this->current_microtik_id,           
+             'description'=>$descripJSON
+         ]);
 
-       return redirect(route('home'))->with('success','Package added successfully');
-    }
+           return redirect(route('home'))->with('success','Package added successfully');
+       }
 
   // Get Connected Devices in the router
-   public function ips_connected_to_router(){
-    $query = new RouterOs\Query('/ip/arp/print');
-    $this->connection();
-    $response = $this->client->query($query)->read();
-    dd($response);
-   }
+       public function ips_connected_to_router(){
+        $query = new RouterOs\Query('/ip/arp/print');
+        $this->connection();
+        $response = $this->client->query($query)->read();
+        dd($response);
+    }
 
    // Get Hotspot Profiles In the router
-   public function listProfiles(){
-    $query = new RouterOS\Query('/ip/hotspot/user/profile/print');
-    $this->connection();      
-    $profiles = $this->client->query($query)->read();
-    return view('admin.profiles.show-profiles', compact('profiles'));
-   }   
+    public function listProfiles(){
+        $query = new RouterOS\Query('/ip/hotspot/user/profile/print');
+        $this->connection();      
+        $profiles = $this->client->query($query)->read();
+        return view('admin.profiles.show-profiles', compact('profiles'));
+    }   
 
    // Get users existing in hotspot
-   public function hotspot_users(){
-     $query = new RouterOS\Query('/ip/hotspot/user/print');
-     $this->connection();        
-     $userProfiles = $this->client->query($query)->read(); 
-     
-    return view('admin.users.view_users', compact('userProfiles'));
+    public function hotspot_users(){
+       $query = new RouterOS\Query('/ip/hotspot/user/print');
+       $this->connection();        
+       $userProfiles = $this->client->query($query)->read(); 
+       
+       return view('admin.users.view_users', compact('userProfiles'));
    }
 
    public function logs(){
@@ -189,32 +188,32 @@ class AdminController extends Controller
     $this->connection();        
     $logs = $this->client->query($query)->read(); 
     return $logs;
-   }
+}
 
-   public function active_hotspot_users(){
+public function active_hotspot_users(){
     $query = new RouterOS\Query('/ip/hotspot/active/print'); 
     $this->connection();        
     $active_hotspot_users = $this->client->query($query)->read(); 
     return view('admin.users.view_users', compact('active_hotspot_users'));
-   }
+}
 
-   public function interfaces(){
+public function interfaces(){
     $query = new RouterOS\Query('/interface/getall'); 
     $this->connection();        
     $interfaces = $this->client->query($query)->read(); 
     return $interfaces;
-   }
+}
 
-   public function getInterfaceData($id) {
-		$interfaces = $this->interfaces();
-		return $interfaces[$id];
-   }
+public function getInterfaceData($id) {
+  $interfaces = $this->interfaces();
+  return $interfaces[$id];
+}
 
 
    // Transaction functions
-   public function allTransactions(){
+public function allTransactions(){
     return MpesaTransaction::all();
-   }
+}
 
 
 

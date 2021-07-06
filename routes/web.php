@@ -65,6 +65,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     //Help
     Route::get('mpesa/help/form',[App\Http\Controllers\HelpController::class, 'raw_transaction'])->name('admin.raw_purchase.form'); 
     Route::post('mpesa/help',[App\Http\Controllers\HelpController::class, 'create_subscription'])->name('admin.raw_purchase');
+
+    Route::resource('wired_clients','WiredClientsController');
     
 });
 

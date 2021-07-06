@@ -128,6 +128,22 @@
 </div>
 </li>
 
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseWiredClients"
+    aria-expanded="true" aria-controls="collapseWiredClients">
+    <i class="fas fa-users"></i>
+    <span>Wired Clients</span>
+</a>
+<div id="collapseWiredClients" class="collapse" aria-labelledby="AdminUtilities"
+data-parent="#accordionSidebar">
+<div class="bg-white py-2 collapse-inner rounded">
+    <h6 class="collapse-header">Clients:</h6>
+    <a class="collapse-item" href="{{ route('wired_clients.index') }}">View All</a>
+    <a class="collapse-item" href="{{ route("wired_clients.create") }}">Add Client</a>       
+</div>
+</div>
+</li>
+
 
 <!-- Divider -->
 <hr class="sidebar-divider">

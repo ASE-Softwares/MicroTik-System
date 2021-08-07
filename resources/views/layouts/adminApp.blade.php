@@ -17,22 +17,22 @@
     rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset("css/admin/admin-2.css") }}" rel="stylesheet">
+    <link href="/css/admin/admin-2.css" rel="stylesheet">
 
 
-    <script src="{{ asset('js/admin/jquery.js') }}"></script>
+    <script src="/js/admin/jquery.js"></script>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="/js/app.js" defer></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset("js/admin/jquery.easing.js") }}"></script>
+    <script src="/js/admin/jquery.easing.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset("js/admin/admin-2.js") }}"></script>
+    <script src="/js/admin/admin-2.js"></script>
 
     {{-- font awesome --}}
-    <script src="{{ asset('js/all.js') }}"></script>
+    <script src="/js/all.js"></script>
 
     @yield('styles')
 

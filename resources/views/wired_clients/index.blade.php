@@ -14,60 +14,59 @@ Wired Clients
         <div class="table-responsive">
 
             <table class="display nowrap table table-hover table-striped table-bordered dataTable" cellspacing="0" width="100%" role="grid" aria-describedby="example23_info" style="width: 100%;">
-                <thead >
+                <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Email</th>
+                        <th>Ip</th>
+                        <th>More Info</th>
                         <th>Created At</th>
-                        <th>Action</th> 
-                        <th>More</th>                       
+                        <th>Action</th>
+                        <th>More</th>
                     </tr>
                 </thead>
-                <tfoot>                   
+                <tfoot>
                 </tfoot>
                 <tbody>
                     @foreach ($users as $user)
 
                     <tr>
                         <td class="">
-                            {{$user->id}}
+                            {{$user['.id']}}
                         </td>
-                        <td > 
-                            <b>{{ucfirst($user->name)}}</b>
-                        </td>
-
-                        <td> <a target="_blank" href="mailto:{{$user->email}}">{{$user->email}}</a>
+                        <td>
+                            <b>{{$user['target']}}</b>
                         </td>
 
-                        <td> 
-                            {{$user->created_at->diffForHumans()}}
+                        <td>{{$user['comment']}} </a>
                         </td>
 
-                        <td class=""> 
+                        <td>
+
+                        </td>
+
+
+                        <td></td>
+                        <td class="">
                             <div class="row">
                                 <div class="pl-3">
-                                    <a href="{{ route('admin.create') }}">
+                                    <a href="#">
                                         <i class="fas fa-plus text-success"></i>
                                     </a>
                                 </div>
 
                                 <div class="pl-3">
-                                    <a href="{{ route('admin.delete') }}">
+                                    <a href="#">
                                         <i class="fas fa-pen"></i>
                                     </a>
                                 </div>
 
                             </div>
-
-
-                        </td>  
-                        <td></td>                          
+                        </td>
                     </tr>
 
                     @endforeach
 
-                    
+
                 </tbody>
             </table>
         </div>

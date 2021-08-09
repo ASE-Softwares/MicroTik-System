@@ -1,132 +1,540 @@
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Microtik System</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Styles -->
-        <style>
-            /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}a{background-color:transparent}[hidden]{display:none}html{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;line-height:1.5}*,:after,:before{box-sizing:border-box;border:0 solid #e2e8f0}a{color:inherit;text-decoration:inherit}svg,video{display:block;vertical-align:middle}video{max-width:100%;height:auto}.bg-white{--bg-opacity:1;background-color:#fff;background-color:rgba(255,255,255,var(--bg-opacity))}.bg-gray-100{--bg-opacity:1;background-color:#f7fafc;background-color:rgba(247,250,252,var(--bg-opacity))}.border-gray-200{--border-opacity:1;border-color:#edf2f7;border-color:rgba(237,242,247,var(--border-opacity))}.border-t{border-top-width:1px}.flex{display:flex}.grid{display:grid}.hidden{display:none}.items-center{align-items:center}.justify-center{justify-content:center}.font-semibold{font-weight:600}.h-5{height:1.25rem}.h-8{height:2rem}.h-16{height:4rem}.text-sm{font-size:.875rem}.text-lg{font-size:1.125rem}.leading-7{line-height:1.75rem}.mx-auto{margin-left:auto;margin-right:auto}.ml-1{margin-left:.25rem}.mt-2{margin-top:.5rem}.mr-2{margin-right:.5rem}.ml-2{margin-left:.5rem}.mt-4{margin-top:1rem}.ml-4{margin-left:1rem}.mt-8{margin-top:2rem}.ml-12{margin-left:3rem}.-mt-px{margin-top:-1px}.max-w-6xl{max-width:72rem}.min-h-screen{min-height:100vh}.overflow-hidden{overflow:hidden}.p-6{padding:1.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.pt-8{padding-top:2rem}.fixed{position:fixed}.relative{position:relative}.top-0{top:0}.right-0{right:0}.shadow{box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06)}.text-center{text-align:center}.text-gray-200{--text-opacity:1;color:#edf2f7;color:rgba(237,242,247,var(--text-opacity))}.text-gray-300{--text-opacity:1;color:#e2e8f0;color:rgba(226,232,240,var(--text-opacity))}.text-gray-400{--text-opacity:1;color:#cbd5e0;color:rgba(203,213,224,var(--text-opacity))}.text-gray-500{--text-opacity:1;color:#a0aec0;color:rgba(160,174,192,var(--text-opacity))}.text-gray-600{--text-opacity:1;color:#718096;color:rgba(113,128,150,var(--text-opacity))}.text-gray-700{--text-opacity:1;color:#4a5568;color:rgba(74,85,104,var(--text-opacity))}.text-gray-900{--text-opacity:1;color:#1a202c;color:rgba(26,32,44,var(--text-opacity))}.underline{text-decoration:underline}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.w-5{width:1.25rem}.w-8{width:2rem}.w-auto{width:auto}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.sm\:rounded-lg{border-radius:.5rem}.sm\:block{display:block}.sm\:items-center{align-items:center}.sm\:justify-start{justify-content:flex-start}.sm\:justify-between{justify-content:space-between}.sm\:h-20{height:5rem}.sm\:ml-0{margin-left:0}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:pt-0{padding-top:0}.sm\:text-left{text-align:left}.sm\:text-right{text-align:right}}@media (min-width:768px){.md\:border-t-0{border-top-width:0}.md\:border-l{border-left-width:1px}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (min-width:1024px){.lg\:px-8{padding-left:2rem;padding-right:2rem}}@media (prefers-color-scheme:dark){.dark\:bg-gray-800{--bg-opacity:1;background-color:#2d3748;background-color:rgba(45,55,72,var(--bg-opacity))}.dark\:bg-gray-900{--bg-opacity:1;background-color:#1a202c;background-color:rgba(26,32,44,var(--bg-opacity))}.dark\:border-gray-700{--border-opacity:1;border-color:#4a5568;border-color:rgba(74,85,104,var(--border-opacity))}.dark\:text-white{--text-opacity:1;color:#fff;color:rgba(255,255,255,var(--text-opacity))}.dark\:text-gray-400{--text-opacity:1;color:#cbd5e0;color:rgba(203,213,224,var(--text-opacity))}}
-            .mikrotik-background{
-                background: #a2a09b;
-                background: -webkit-linear-gradient(315deg,hsla(236.6,0%,53.52%,1) 0,hsla(236.6,0%,53.52%,0) 70%),-webkit-linear-gradient(65deg,hsla(220.75,34.93%,26.52%,1) 10%,hsla(220.75,34.93%,26.52%,0) 80%),-webkit-linear-gradient(135deg,hsla(46.42,36.62%,83.92%,1) 15%,hsla(46.42,36.62%,83.92%,0) 80%),-webkit-linear-gradient(205deg,hsla(191.32,50.68%,56.45%,1) 100%,hsla(191.32,50.68%,56.45%,0) 70%);
-                background: linear-gradient(135deg,hsla(236.6,0%,53.52%,1) 0,hsla(236.6,0%,53.52%,0) 70%),linear-gradient(25deg,hsla(220.75,34.93%,26.52%,1) 10%,hsla(220.75,34.93%,26.52%,0) 80%),linear-gradient(315deg,hsla(46.42,36.62%,83.92%,1) 15%,hsla(46.42,36.62%,83.92%,0) 80%),linear-gradient(245deg,hsla(191.32,50.68%,56.45%,1) 100%,hsla(191.32,50.68%,56.45%,0) 70%);
+    <title>Microtik System</title>
+
+    <!-- Styles -->
+    <style>
+        /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+        html {
+            line-height: 1.15;
+            -webkit-text-size-adjust: 100%
+        }
+
+        body {
+            margin: 0
+        }
+
+        a {
+            background-color: transparent
+        }
+
+        [hidden] {
+            display: none
+        }
+
+        html {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+            line-height: 1.5
+        }
+
+        *,
+        :after,
+        :before {
+            box-sizing: border-box;
+            border: 0 solid #e2e8f0
+        }
+
+        a {
+            color: inherit;
+            text-decoration: inherit
+        }
+
+        svg,
+        video {
+            display: block;
+            vertical-align: middle
+        }
+
+        video {
+            max-width: 100%;
+            height: auto
+        }
+
+        .bg-white {
+            --bg-opacity: 1;
+            background-color: #fff;
+            background-color: rgba(255, 255, 255, var(--bg-opacity))
+        }
+
+        .bg-gray-100 {
+            --bg-opacity: 1;
+            background-color: #f7fafc;
+            background-color: rgba(247, 250, 252, var(--bg-opacity))
+        }
+
+        .border-gray-200 {
+            --border-opacity: 1;
+            border-color: #edf2f7;
+            border-color: rgba(237, 242, 247, var(--border-opacity))
+        }
+
+        .border-t {
+            border-top-width: 1px
+        }
+
+        .flex {
+            display: flex
+        }
+
+        .grid {
+            display: grid
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .items-center {
+            align-items: center
+        }
+
+        .justify-center {
+            justify-content: center
+        }
+
+        .font-semibold {
+            font-weight: 600
+        }
+
+        .h-5 {
+            height: 1.25rem
+        }
+
+        .h-8 {
+            height: 2rem
+        }
+
+        .h-16 {
+            height: 4rem
+        }
+
+        .text-sm {
+            font-size: .875rem
+        }
+
+        .text-lg {
+            font-size: 1.125rem
+        }
+
+        .leading-7 {
+            line-height: 1.75rem
+        }
+
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto
+        }
+
+        .ml-1 {
+            margin-left: .25rem
+        }
+
+        .mt-2 {
+            margin-top: .5rem
+        }
+
+        .mr-2 {
+            margin-right: .5rem
+        }
+
+        .ml-2 {
+            margin-left: .5rem
+        }
+
+        .mt-4 {
+            margin-top: 1rem
+        }
+
+        .ml-4 {
+            margin-left: 1rem
+        }
+
+        .mt-8 {
+            margin-top: 2rem
+        }
+
+        .ml-12 {
+            margin-left: 3rem
+        }
+
+        .-mt-px {
+            margin-top: -1px
+        }
+
+        .max-w-6xl {
+            max-width: 72rem
+        }
+
+        .min-h-screen {
+            min-height: 100vh
+        }
+
+        .overflow-hidden {
+            overflow: hidden
+        }
+
+        .p-6 {
+            padding: 1.5rem
+        }
+
+        .py-4 {
+            padding-top: 1rem;
+            padding-bottom: 1rem
+        }
+
+        .px-6 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem
+        }
+
+        .pt-8 {
+            padding-top: 2rem
+        }
+
+        .fixed {
+            position: fixed
+        }
+
+        .relative {
+            position: relative
+        }
+
+        .top-0 {
+            top: 0
+        }
+
+        .right-0 {
+            right: 0
+        }
+
+        .shadow {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06)
+        }
+
+        .text-center {
+            text-align: center
+        }
+
+        .text-gray-200 {
+            --text-opacity: 1;
+            color: #edf2f7;
+            color: rgba(237, 242, 247, var(--text-opacity))
+        }
+
+        .text-gray-300 {
+            --text-opacity: 1;
+            color: #e2e8f0;
+            color: rgba(226, 232, 240, var(--text-opacity))
+        }
+
+        .text-gray-400 {
+            --text-opacity: 1;
+            color: #cbd5e0;
+            color: rgba(203, 213, 224, var(--text-opacity))
+        }
+
+        .text-gray-500 {
+            --text-opacity: 1;
+            color: #a0aec0;
+            color: rgba(160, 174, 192, var(--text-opacity))
+        }
+
+        .text-gray-600 {
+            --text-opacity: 1;
+            color: #718096;
+            color: rgba(113, 128, 150, var(--text-opacity))
+        }
+
+        .text-gray-700 {
+            --text-opacity: 1;
+            color: #4a5568;
+            color: rgba(74, 85, 104, var(--text-opacity))
+        }
+
+        .text-gray-900 {
+            --text-opacity: 1;
+            color: #1a202c;
+            color: rgba(26, 32, 44, var(--text-opacity))
+        }
+
+        .underline {
+            text-decoration: underline
+        }
+
+        .antialiased {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale
+        }
+
+        .w-5 {
+            width: 1.25rem
+        }
+
+        .w-8 {
+            width: 2rem
+        }
+
+        .w-auto {
+            width: auto
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr))
+        }
+
+        @media (min-width:640px) {
+            .sm\:rounded-lg {
+                border-radius: .5rem
             }
-        </style>
 
-
-        <script src="/js/admin/jquery.js"></script>
-        <script src="/js/app.js" defer></script>
-        <script src="/js/all.js"></script>
-
-        <!------ Include the above in your HEAD tag ---------->
-
-        <link href="/css/routerLogin.css" rel="stylesheet" media="all">
-        <link href="/css/admin/pixel.css" rel="stylesheet" media="all">
-
-        <style>
-            body {
-                font-family: 'Nunito', sans-serif;
+            .sm\:block {
+                display: block
             }
 
-            .microtik-card-button {
-                background-color: #3e4d59 !important;
+            .sm\:items-center {
+                align-items: center
+            }
+
+            .sm\:justify-start {
+                justify-content: flex-start
+            }
+
+            .sm\:justify-between {
+                justify-content: space-between
+            }
+
+            .sm\:h-20 {
+                height: 5rem
+            }
+
+            .sm\:ml-0 {
+                margin-left: 0
+            }
+
+            .sm\:px-6 {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem
+            }
+
+            .sm\:pt-0 {
+                padding-top: 0
+            }
+
+            .sm\:text-left {
+                text-align: left
+            }
+
+            .sm\:text-right {
+                text-align: right
+            }
+        }
+
+        @media (min-width:768px) {
+            .md\:border-t-0 {
+                border-top-width: 0
+            }
+
+            .md\:border-l {
+                border-left-width: 1px
+            }
+
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+        }
+
+        @media (min-width:1024px) {
+            .lg\:px-8 {
+                padding-left: 2rem;
+                padding-right: 2rem
+            }
+        }
+
+        @media (prefers-color-scheme:dark) {
+            .dark\:bg-gray-800 {
+                --bg-opacity: 1;
+                background-color: #2d3748;
+                background-color: rgba(45, 55, 72, var(--bg-opacity))
+            }
+
+            .dark\:bg-gray-900 {
+                --bg-opacity: 1;
+                background-color: #1a202c;
+                background-color: rgba(26, 32, 44, var(--bg-opacity))
+            }
+
+            .dark\:border-gray-700 {
+                --border-opacity: 1;
+                border-color: #4a5568;
+                border-color: rgba(74, 85, 104, var(--border-opacity))
+            }
+
+            .dark\:text-white {
+                --text-opacity: 1;
                 color: #fff;
-                cursor: pointer;
-                text-align: center;
-                border-radius: 6px;
-                -webkit-transition: background .3s ease-in-out;
-                transition: background .3s ease-in-out;
+                color: rgba(255, 255, 255, var(--text-opacity))
             }
-        </style>
 
-    </head>
-    <body class="antialiased mikrotik-background">
-        <div id="app" class="relative flex items-top justify-center min-h-screen sm:items-center sm:pt-0"> 
+            .dark\:text-gray-400 {
+                --text-opacity: 1;
+                color: #cbd5e0;
+                color: rgba(203, 213, 224, var(--text-opacity))
+            }
+        }
 
-            <div class="section section-md py-5">
-                <div class="container">
-                    <!-- Title  -->
-                    <div class="row">
-                        <div class="col-md-4 text-center mx-auto">
-                            <div class="mb-5">
-                                <a href="#">
-                                    <img src="/img/wifi.png" alt="Logo Themesberg Light"
-                                        class="mb-4" style="width: 75px;">
-                                    <h1 class="h3 mb-4">ASE Wireless</h1>
-                                </a>
-                            </div>
+        .mikrotik-background {
+            background: #a2a09b;
+            background: -webkit-linear-gradient(315deg, hsla(236.6, 0%, 53.52%, 1) 0, hsla(236.6, 0%, 53.52%, 0) 70%), -webkit-linear-gradient(65deg, hsla(220.75, 34.93%, 26.52%, 1) 10%, hsla(220.75, 34.93%, 26.52%, 0) 80%), -webkit-linear-gradient(135deg, hsla(46.42, 36.62%, 83.92%, 1) 15%, hsla(46.42, 36.62%, 83.92%, 0) 80%), -webkit-linear-gradient(205deg, hsla(191.32, 50.68%, 56.45%, 1) 100%, hsla(191.32, 50.68%, 56.45%, 0) 70%);
+            background: linear-gradient(135deg, hsla(236.6, 0%, 53.52%, 1) 0, hsla(236.6, 0%, 53.52%, 0) 70%), linear-gradient(25deg, hsla(220.75, 34.93%, 26.52%, 1) 10%, hsla(220.75, 34.93%, 26.52%, 0) 80%), linear-gradient(315deg, hsla(46.42, 36.62%, 83.92%, 1) 15%, hsla(46.42, 36.62%, 83.92%, 0) 80%), linear-gradient(245deg, hsla(191.32, 50.68%, 56.45%, 1) 100%, hsla(191.32, 50.68%, 56.45%, 0) 70%);
+        }
+    </style>
+
+
+    <script src="/js/admin/jquery.js"></script>
+    <script src="/js/app.js" defer></script>
+    <script src="/js/all.js"></script>
+
+    <!------ Include the above in your HEAD tag ---------->
+
+    <link href="/css/routerLogin.css" rel="stylesheet" media="all">
+    <link href="/css/admin/pixel.css" rel="stylesheet" media="all">
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .microtik-card-button {
+            background-color: #3e4d59 !important;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 6px;
+            -webkit-transition: background .3s ease-in-out;
+            transition: background .3s ease-in-out;
+        }
+    </style>
+
+</head>
+
+<body class="antialiased mikrotik-background">
+    <div id="app" class="relative flex items-top justify-center min-h-screen sm:items-center sm:pt-0">
+
+        <div class="section section-md py-5">
+            <div class="container">
+                <!-- Title  -->
+                <div class="row justify-content-center">
+                    <div class="col-md-4 text-center mx-auto">
+                        <div class="mb-3">
+                            <a href="#">
+                                <img src="/img/wifi.png" alt="Logo Themesberg Light" class="mb-4" style="width: 75px;">
+                                <h1 class="h3 mb-4">ASE Wireless</h1>
+                            </a>
+                            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modelId">
+                                Click To Learn How To Use
+                            </button>
                         </div>
                     </div>
-                    <div class="row mt-4">
+                </div>
+                <div class="row mt-2">
 
-                        <div class="col-md-12 mx-auto">
-                            <!-- Section title-->
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="mt-5 mb-5">
-                                        <h4 class="font-weight-bold">Packages</h4>
-                                    </div>
+                    <div class="col-md-12 mx-auto">
+                        <!-- Section title-->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mt-1 mb-1">
+                                    <h4 class="font-weight-bold text-center">Our Packages</h4>
                                 </div>
                             </div>
-                            <!--End section title-->
+                        </div>
+                        <!--End section title-->
 
-                            <div class="row">
-                                @foreach ($packages as $package)
-                                    
+                        <div class="row">
+                            @foreach ($packages as $package)
 
 
-                                <div class="col-md-6 col-lg-4 m-auto">
-                                    <!-- Pricing Card -->
-                                    <div class="pricing-card mt-3">
-                                        <div class="card microtik-card-button text-center text-white p-4">
-                                            <!-- Header -->
-                                            <header class="card-header border-0">
-                                                <h1 class="h3 text-warning mb-3">{{ $package['name'] }}</h1>
-                                                <div class="pricing-value border-white">
-                                                    <span class="display-2 font-weight-bold">
-                                                        <span class="font-medium">Ksh. </span>{{ $package['price'] }}
-                                                    </span>
-                                                </div>
-                                            </header>
-                                            <!-- End Header -->
 
-                                            <!-- Content -->
-                                            <div class="card-body ">
-                                                <ul class="list-group mb-4">
-                                                    @if (!isset($package['desription']))
-                                                        @foreach (json_decode($package['description']) as $description)
-                                                            <li class="list-group-item">{{ isset($description)? $description: "" }}</li>
-                                                        @endforeach
-                                                    @endif
-                                                    
-                                                </ul>
-                                                <pay-button :sel_package="{{ $package }}"/>
+                            <div class="col-md-6 col-lg-4 m-auto">
+                                <!-- Pricing Card -->
+                                <div class="pricing-card mt-3">
+                                    <div class="card microtik-card-button text-center text-white p-4">
+                                        <!-- Header -->
+                                        <header class="card-header border-0">
+                                            <h1 class="h3 text-warning mb-3">{{ $package['name'] }}</h1>
+                                            <div class="pricing-value border-white">
+                                                <span class="display-2 font-weight-bold">
+                                                    <span class="font-medium">Ksh. </span>{{ $package['price'] }}
+                                                </span>
                                             </div>
+                                        </header>
+                                        <!-- End Header -->
 
-                                            <!-- Modal -->
-                                                
-                    
-                                            <!-- End Content -->
+                                        <!-- Content -->
+                                        <div class="card-body ">
+                                            <ul class="list-group mb-4">
+                                                @if (!isset($package['desription']))
+                                                @foreach (json_decode($package['description']) as $description)
+                                                <li class="list-group-item">{{ isset($description)? $description: "" }}</li>
+                                                @endforeach
+                                                @endif
+
+                                            </ul>
+                                            <pay-button :sel_package="{{ $package }}" />
                                         </div>
-                                    </div>
-                                    <!-- End of Pricing Card -->
-                                </div>
 
-                                @endforeach
-                                
+                                        <!-- Modal -->
+
+
+                                        <!-- End Content -->
+                                    </div>
+                                </div>
+                                <!-- End of Pricing Card -->
+                            </div>
+
+                            @endforeach
+
+                        </div>
+
+                        <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">ASE WIRELESS WIFI HOTSPOT VENDOR GUIDE</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <ol class="list-group">
+                                            <li class="list-group-item p-1">Click the <strong>Purchase</strong> button below the desired package from the list below</li>
+                                            <li class="list-group-item p-1">A pop appears and prompts you to enter your phone number, please enter your mpesa registered phone number in the format 07... or 01...</li>
+                                            <li class="list-group-item p-1">Ensure your phone and screen is on, you will be requested to enter your MPESA PIN</li>
+                                            <li class="list-group-item p-1">After getting a success message, go back to our hotspot login page and enter your phone number entered in the purchase form as <strong>username</strong></li>
+                                            <li class="list-group-item p-1">Enter your MPESA confirmation code as password eg <strong>OULI5KIAWAPI</strong> as password</li>
+                                            <li class="list-group-item p-1">Click Login and Enjoy</li>
+                                            <br>
+                                            <li class="list-group-item p-1">For any Challenges, send an sms or call <a href="tel:0708509365">Our support</a> <a href="tel:07">team</a></li>
+                                        </ol>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
-  
+    </div>
+
+
+</body>
+
 </html>
 {{--We could add a row that says in each package $package->micro_tik->location --}}
-
-

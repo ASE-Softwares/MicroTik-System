@@ -129,7 +129,7 @@ class AdminController extends Controller
     public function newProfile(Request $request)
     {
         $data = $this->validate($request, [
-            'name' => 'required|string|unique:profiles|max:10',
+            'name' => 'required|string|unique:profiles|max:50',
             'shared-users' => 'required|numeric',
             'rate-limit' => 'nullable',
             'price' => 'required|numeric',

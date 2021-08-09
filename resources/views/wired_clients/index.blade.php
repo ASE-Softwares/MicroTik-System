@@ -19,7 +19,7 @@ Wired Clients
                         <th>#</th>
                         <th>Network</th>
                         <th>Comment</th>
-                        <th>Created At</th>
+                        <th>Network</th>
                         <th>More</th>
                         <th>Action</th>
                     </tr>

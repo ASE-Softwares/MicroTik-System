@@ -9,20 +9,33 @@ use App\Models\Profile;
 use App\Helpers\Mpesa;
 use App\Models\Mpesaresponse;
 use App\Models\MpesaTransaction;
+use Facade\FlareClient\Http\Response;
+use Illuminate\Support\Str;
 
 class GuestController extends Controller
-{ 
+{
+  /*
+      Router OS Client Instance
+  */
   protected $client;
-  public function __construct(){
+
+  //Class contructor
+  public function __construct()
+  {
     $this->connection();
   }
 
-  public function welcome(){
+  // Show the Vending App Welcome Page
+  public function welcome()
+  {
     $packages = Profile::all();
     return view('welcome', compact('packages'));
   }
 
-  public function connection(){
+
+  // Create a connection Instance
+  public function connection()
+  {
     $config = new \RouterOS\Config([
       'host' => env('REMOTE_ROUTER_HOST'),
       'user' => env('REMOTE_ROUTER_USER'),
@@ -31,105 +44,106 @@ class GuestController extends Controller
     ]);
 
     try {
-      $this->client = new RouterOS\Client($config);            
+      $this->client = new RouterOS\Client($config);
     } catch (\Exception $e) {
-     return;
-   }      
- }
-
- public function purchase(Request $request){
-  $data = $this->validate($request, [
-    'phone_number'=>['required','numeric','digits:10','starts_with:07,01'],
-    'id'=>['exists:profiles','required'],        
-  ]);
-  $package = Profile::find($data['id']);
-  $amount=$package->price;
-  $pnb = ltrim($data['phone_number'], '0');
-  $msisdn='254'.$pnb;    
-  $TransactionDesc=$package->name;
-  $newTrial = new Mpesa;
-  $response = $newTrial->sendSTKPush($amount, $msisdn, $TransactionDesc);
-  return $response;
-
-}   
-public function responseFromMpesa(Request $request){
-  $body= $request->getContent();
-  $data = json_decode($body);
-  $newreponse = Mpesaresponse::create([
-    'body'=>$body
-  ]);
-  $this->create_subscription($newreponse->id);
-  return false;
-}
-
-public function create_subscription($id){    
-  $res = Mpesaresponse::find($id);
-  $data = json_decode($res->body, true);
-  $body = $data['Body'];
-  $stkCallback=$body['stkCallback'];
-  $ResultCode =$stkCallback['ResultCode']; 
-  if ($ResultCode == 0) {
-    $CallbackMetadata = $stkCallback['CallbackMetadata'];
-    $Items = $CallbackMetadata['Item'];
-    $amount = $Items[0]['Value'];
-    $MpesaReceiptNumber = $Items[1]['Value'];      
-    
-    if (strval($Items[2]['Name'])=='Balance') {
-      $TransactionDate = strval($Items[3]['Value']);
-      $PhoneNumber = strval($Items[4]['Value']);
-    }else{
-      $TransactionDate = strval($Items[2]['Value']);
-      $PhoneNumber = strval($Items[3]['Value']);
+      return;
     }
-    
-    
-    
+  }
 
-    $PhoneNumber = ltrim($PhoneNumber, '254');
 
-    $PhoneNumber = '0'.$PhoneNumber;
-    $t = MpesaTransaction::where('MpesaReceiptNumber', $MpesaReceiptNumber)->get();
-    if ($t->count()>0) {
-      return "Transaction Already Exists";
+  /*
+      Send an stk push request and return the response to client side vue framework
+  */
+  public function purchase(Request $request,  Mpesa $mpesa)
+  {
+    $data = $this->validate($request, [
+      'phone_number' => ['required', 'numeric', 'digits:10', 'starts_with:07,01'],
+      'id' => ['exists:profiles', 'required'],
+    ]);
+    $package = Profile::find($data['id']);
+    $amount = $package->price;
+    $pnb = ltrim($data['phone_number'], '0');
+    $msisdn = '254' . $pnb;
+    $TransactionDesc = $package->name;
+    $response = $mpesa->sendSTKPush($amount, $msisdn, $TransactionDesc);
+
+    $response_object = response($response)->getContent();
+    $response_object_as_json = json_decode($response_object, true);
+    if ($response_object_as_json['ResponseCode'] == "0") {
+      MpesaTransaction::create([
+        'CheckoutRequestID' => $response_object_as_json['CheckoutRequestID'],
+        'amount' => $amount,
+        'MpesaReceiptNumber' => Str::random(15),
+        'TransactionDate' => Carbon::now(),
+        'PhoneNumber' => $data['phone_number'],
+        'status' => 'Push Sent',
+        'profile_id' => $package->id
+      ]);
     }
+    return $response;
+  }
 
-    $create_transaction = new MpesaTransaction;
-    $create_transaction->amount= $amount;
-    $create_transaction->MpesaReceiptNumber=$MpesaReceiptNumber;
-    $create_transaction->TransactionDate=$TransactionDate;
-    $create_transaction->PhoneNumber=$PhoneNumber;
 
-      //get a profile from router with price 100
-    $profile = Profile::where('price', $amount)->first();
-    if ($profile) {
-        //create a user
-      $this->create_user($PhoneNumber, $MpesaReceiptNumber, $profile->name);
-      $create_transaction->status = "Conected To Network SuccessFully";
-    }
-    else{
-      $create_transaction->status = "Not Conected To Network, Error! Missing Profile ";
-
-        //alert admin of a payment that has an issue.
-    }
-
-    $create_transaction->save();
+  // Process the response from mpesa from our callback url
+  public function responseFromMpesa(Request $request)
+  {
+    $this->create_subscription($request);
     return;
+  }
 
-  } 
-  else{
+
+  /*
+    Process the Payment, update the transaction and create the user to hotspot
+    */
+
+
+  public function create_subscription(Request $req)
+  {
+    $response_object = $req->getContent();
+    $response_object_as_json = json_decode($response_object, true);
+    $body = $response_object_as_json['Body'];
+    $stkCallback = $body['stkCallback'];
+    $CheckoutRequestID = $stkCallback['CheckoutRequestID'];
+    $ResultCode = $stkCallback['ResultCode'];
+    if ($ResultCode == 0) {
+      $CallbackMetadata = $stkCallback['CallbackMetadata'];
+      $Items = collect($CallbackMetadata['Item']);
+      $phone_number = collect($Items->firstWhere('Name', 'PhoneNumber'))->get('Value');
+      $transaction_code = collect($Items->firstWhere('Name', 'MpesaReceiptNumber'))->get('Value');
+      $PhoneNumber = ltrim($phone_number, '254');
+      $PhoneNumber = '0' . $PhoneNumber;
+      $t = MpesaTransaction::where('CheckoutRequestID', $CheckoutRequestID)->where('status', 'Push Sent')->first();
+      if (!$t == null) {
+        $t->update([
+          'status' => 'Processing',
+        ]);
+        $profile = $t->profile;
+        if ($profile) {
+          $this->create_user($PhoneNumber, $transaction_code, $profile->name);
+          $t->update([
+            'status' => "Conected To Network SuccessFully"
+          ]);
+        } else {
+          $t->update([
+            'status' => "Not Conected To Network, Error! Missing Profile "
+          ]);
+        }
+      }
+      return;
+    } else {
+      return;
+    }
+  }
+
+
+  // Create the User on the router
+  public function create_user($name, $password, $profile)
+  {
+    $query = (new RouterOs\Query('/ip/hotspot/user/add'))
+      ->equal('name', $name)
+      ->equal('password', $password)
+      ->equal('profile', $profile);
+    $response = $this->client->query($query)->read();
     return;
   }
 }
-
-public function create_user($name, $password, $profile){
-  $query = (new RouterOs\Query('/ip/hotspot/user/add'))
-  ->equal('name', $name)
-  ->equal('password',$password)
-  ->equal('profile', $profile);
-  $response = $this->client->query($query)->read();
-  return;
-
-}
-
-}
-

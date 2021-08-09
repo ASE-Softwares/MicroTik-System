@@ -46,9 +46,10 @@ class WiredClientsController extends Controller
 
     public function getClients()
     {
-        $query = new Query('/queue/simple/print');
+        $query = new Query('/ip/address/print');
         $this->connection();
         $users = $this->client->query($query)->read();
+        // dd($users);
         return $users;
     }
 }

@@ -17,11 +17,11 @@ Wired Clients
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Ip</th>
-                        <th>More Info</th>
+                        <th>Network</th>
+                        <th>Comment</th>
                         <th>Created At</th>
-                        <th>Action</th>
                         <th>More</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -34,14 +34,17 @@ Wired Clients
                             {{$user['.id']}}
                         </td>
                         <td>
-                            <b>{{$user['target']}}</b>
-                        </td>
-
-                        <td>{{$user['comment']}} </a>
+                            <b>{{$user['network']}}</b>
                         </td>
 
                         <td>
+                            @if (isset($user['comment']))
+                            {{$user['comment']}} </a>
+                            @endif
+                        </td>
 
+                        <td>
+                            <code>{{$user['address']}}</code>
                         </td>
 
 

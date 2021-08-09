@@ -18,14 +18,14 @@
         </style>
 
 
-        <script src="{{ asset('js/admin/jquery.js') }}"></script>
-        <script src="{{ asset('js/app.js') }}" defer></script>
-        <script src="{{ asset('js/all.js') }}"></script>
+        <script src="/js/admin/jquery.js"></script>
+        <script src="/js/app.js" defer></script>
+        <script src="/js/all.js"></script>
 
         <!------ Include the above in your HEAD tag ---------->
 
-        <link href="{{ asset('css/routerLogin.css') }}" rel="stylesheet" media="all">
-        <link href="{{ asset('css/admin/pixel.css') }}" rel="stylesheet" media="all">
+        <link href="/css/routerLogin.css" rel="stylesheet" media="all">
+        <link href="/css/admin/pixel.css" rel="stylesheet" media="all">
 
         <style>
             body {
@@ -54,7 +54,7 @@
                         <div class="col-md-4 text-center mx-auto">
                             <div class="mb-5">
                                 <a href="#">
-                                    <img src="{{ asset("img/wifi.png") }}" alt="Logo Themesberg Light"
+                                    <img src="/img/wifi.png" alt="Logo Themesberg Light"
                                         class="mb-4" style="width: 75px;">
                                     <h1 class="h3 mb-4">ASE Wireless</h1>
                                 </a>

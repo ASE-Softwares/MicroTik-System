@@ -18,9 +18,9 @@ class CreateWiredClientsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('location');
             $table->unsignedBigInteger('package_id')->nullable();
-            $table->date('payment_date');
+            $table->ipAddress('ip_address');
             $table->softDeletes();
-            $table->integer('active')->default(0);
+            $table->integer('active')->default(true);
             $table->timestamps();
         });
     }

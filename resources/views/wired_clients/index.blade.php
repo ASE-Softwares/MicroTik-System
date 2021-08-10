@@ -17,10 +17,9 @@ Wired Clients
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Network</th>
                         <th>Comment</th>
                         <th>Network</th>
-                        <th>More</th>
+
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -34,10 +33,6 @@ Wired Clients
                             {{$user['.id']}}
                         </td>
                         <td>
-                            <b>{{$user['network']}}</b>
-                        </td>
-
-                        <td>
                             @if (isset($user['comment']))
                             {{$user['comment']}} </a>
                             @endif
@@ -48,7 +43,7 @@ Wired Clients
                         </td>
 
 
-                        <td></td>
+
                         <td class="">
                             <div class="row">
                                 <div class="pl-3">

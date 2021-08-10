@@ -25,6 +25,7 @@ Vue.mixin(common);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('pay-button', require('./components/PayButton.vue').default);
+Vue.component('packages', require('./components/Packages.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

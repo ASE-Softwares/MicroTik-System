@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\RouterAuthMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -62,6 +63,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'session_logged'=>\App\Http\Middleware\SessionLoginMiddleware::class
+        'session_logged' => \App\Http\Middleware\SessionLoginMiddleware::class,
+        'auth_router' => RouterAuthMiddleware::class
     ];
 }

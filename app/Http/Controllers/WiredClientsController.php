@@ -91,7 +91,7 @@ class WiredClientsController extends Controller
         // create an entry in queues
         $this->addQueue($client, $p);
 
-        return redirect()->back()->with('success', 'Client Added');
+        return redirect(route('wired_clients.index'))->with('success', 'Client Added Successfully');
     }
 
     public function addAddress(WiredClient $client, $interface)

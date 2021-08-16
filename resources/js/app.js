@@ -26,6 +26,7 @@ Vue.mixin(common);
 
 Vue.component('pay-button', require('./components/PayButton.vue').default);
 Vue.component('packages', require('./components/Packages.vue').default);
+Vue.component('stats', require('./components/Stats.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

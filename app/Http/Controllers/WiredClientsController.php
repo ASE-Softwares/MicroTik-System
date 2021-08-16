@@ -72,6 +72,8 @@ class WiredClientsController extends Controller
     public function store(AddWiredClientRequest $request)
     {
         $p = Package::findorfail($request->package_id);
+
+        // dd($p);
         $u = User::create([
             'name' => ucfirst($request->client_name),
             'email' => $request->email == null ? strtoupper(Str::random(15)) : $request->email,
@@ -79,8 +81,8 @@ class WiredClientsController extends Controller
         ]);
         $client = WiredClient::create([
             'user_id' => $u->id,
-            'location' => 'Kamakamega',
-            'package_id' => $p->package_id,
+            'location' => 'Kakamega',
+            'package_id' => $p->id,
             'ip_address' => $request->ip
         ]);
 
@@ -143,7 +145,7 @@ class WiredClientsController extends Controller
         $newIp = $s[0] . '.' . $s[1] . '.' . $s[2] . '.' . '2';
 
         $this->connection();
-        $query = (new RouterOs\Query('/ip/firewall/mangle/add'))
+        $query = (new RouterOs\Query('/queue/simple/add'))
             ->equal('name', $wired_client->user->name)
             ->equal('target', $newIp)
             ->equal('max-limit', $p->rate)
@@ -153,7 +155,7 @@ class WiredClientsController extends Controller
     }
     public function suggestIp()
     {
-        $ip =  mt_rand(0, 255) . "." . mt_rand(0, 255) . "." . mt_rand(0, 255) . ".1";
+        $ip =  mt_rand(0, 230) . "." . mt_rand(0, 255) . "." . mt_rand(0, 255) . ".1";
         $user = WiredClient::where('ip_address', $ip)->first();
         if ($user == null) {
             return $ip;

@@ -6,7 +6,7 @@ Wired Clients
 
 @section('content')
 
-<div class="card shadow mb-4">
+<div class="card shadow mb-4" id="app">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">All Wired Clients <a class="btn btn-sm btn-primary float-right" href="{{route('wired_clients.create')}}">New Client</a></h6>
     </div>
@@ -47,9 +47,9 @@ Wired Clients
                         <td class="">
                             <div class="row">
                                 <div class="pl-3">
-                                    <a href="#">
-                                        <i class="fas fa-plus text-success"></i>
-                                    </a>
+                                   
+                                       <stats/>
+                                   
                                 </div>
 
                                 <div class="pl-3">

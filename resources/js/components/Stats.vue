@@ -5,12 +5,138 @@
     </a>
     <Modal
       v-model="statsModal"
-      title="CLient Details"
+      title="Client Details"
       :mask-closable="false"
       :closable="true"
       :width="75"
       :styles="{ top: '20px' }"
     >
+      {{
+        enabled ? "Switch Click to Disable Client" : "Switch to Enable Client"
+      }}
+      <i-switch
+        :before-change="handleBeforeChange"
+        true-color="#13ce66"
+        false-color="#ff4949"
+        v-model="enabled"
+        :loading="isWorking"
+      >
+        <Icon type="md-checkmark" slot="open"></Icon>
+        <Icon type="md-close" slot="close"></Icon>
+      </i-switch>
+
+      <hr class="mt-2 mb-1" />
+
+      <div class="card">
+        <div class="card-header">More Information</div>
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm">
+              <div class="card">
+                <div class="card-body bg-info">
+                  <h4 class="text-dark">ID :</h4>
+                  <span class="text-white font-weight-bold h5">
+                    {{ client[".id"] }}</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-sm">
+              <div class="card">
+                <div class="card-body bg-info">
+                  <h4 class="text-dark">Address :</h4>
+                  <span class="text-white font-weight-bold h5">{{
+                    client.address
+                  }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm">
+              <div class="card">
+                <div class="card-body bg-info">
+                  <h4 class="text-dark">Network :</h4>
+                  <span class="text-white font-weight-bold h5">{{
+                    client.network
+                  }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm">
+              <div class="card">
+                <div class="card-body bg-info">
+                  <h4 class="text-dark">interface :</h4>
+                  <span class="text-white font-weight-bold h5">
+                    {{ client.interface }}</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-sm">
+              <div class="card">
+                <div class="card-body bg-info">
+                  <h4 class="text-dark">Status :</h4>
+
+                  <span class="text-white font-weight-bold h5">{{
+                    client.disabled == "false" ? "Active" : "Disabled"
+                  }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-4" v-if="moreData.client != null">
+              <div class="card">
+                <div class="card-header">Client Information</div>
+                <div class="card-body">
+                  <div class="card">
+                    <div class="card-body bg-success">
+                      <h4 class="text-dark">Name</h4>
+                      <span class="text-white font-weight-bold h5">
+                        {{ moreData.client.user.name }}</span
+                      >
+                      <hr />
+                      <h4 class="text-dark">Email</h4>
+                      <span class="text-white font-weight-bold h5">
+                        {{ moreData.client.user.email }}</span
+                      >
+                      <hr />
+                      <h4 class="text-dark">Location</h4>
+                      <span class="text-white font-weight-bold h5">
+                        {{ moreData.client.location }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8" v-if="moreData.queue != null">
+              <div class="card">
+                <div class="card-header">Network Statistics</div>
+                <div class="card-body">
+                  <div class="card">
+                    <div class="card-body bg-success">
+                      <h4 class="text-dark">Speed</h4>
+                      <span class="text-white font-weight-bold h5">
+                        {{ speedConv(moreData.queue["max-limit"]) }}</span
+                      >
+                      <h4 class="text-dark">Comment</h4>
+                      <span class="text-white font-weight-bold h5">
+                        {{ moreData.queue.comment }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div slot="footer">
+        <Button size="small" type="error" @click="statsModal = false"
+          >Close <i class="fas fa-window-close" aria-hidden="true"></i
+        ></Button>
+      </div>
     </Modal>
   </div>
 </template>
@@ -19,9 +145,85 @@ export default {
   data() {
     return {
       statsModal: false,
+      enabled: this.client.disabled == "true" ? false : true,
+      isWorking: false,
+      moreData: {
+        client: null,
+        queue: null,
+      },
     };
   },
+  props: {
+    client: Object,
+  },
+  watch: {
+    statsModal() {
+      if (this.statsModal == true) {
+        // Reset the statistics before a new call
+        this.moreData = {
+          client: null,
+          queue: null,
+        };
+        this.getQueueData();
+      }
+    },
+  },
   methods: {
+    speedConv(rate) {
+      // get the pos of the slash
+      var right = Number(rate.split("/").pop());
+      var left = Number(rate.substring(0, rate.indexOf("/")));
+
+      return Number(left / 1000000) + "M/" + Number(right / 1000000) + "M";
+      // split the string into two
+      //join it
+      //return it
+    },
+    async getQueueData() {
+      const res = await this.callApi(
+        "get",
+        "/admin/queue_information/" + this.client.network
+      );
+      if (res.status == 201) {
+        this.moreData = res.data;
+      }
+    },
+    async CallApiToDisable() {
+      this.isWorking = true;
+      let obj = {
+        client: this.client,
+        enable: this.enabled,
+      };
+      const res = await this.callApi(
+        "post",
+        "/admin/disableClientInRouter",
+        obj
+      );
+      if (res.status == 201) {
+        this.s(
+          "CLient " + (this.enabled ? "Disabled" : "Enabled ") + " Successfuly"
+        );
+        this.enabled = true;
+        window.location = "/admin/wired_clients";
+      } else {
+        this.e("Error Occured");
+      }
+      this.enabled = this.client.disabled == "true" ? false : true;
+      this.isWorking = false;
+    },
+    handleBeforeChange() {
+      return new Promise((resolve) => {
+        this.$Modal.confirm({
+          title: "Confirm Action",
+          content:
+            "Are You Sure you want to " +
+            (this.enabled ? "Disable Client" : "Enable Client"),
+          onOk: () => {
+            this.CallApiToDisable();
+          },
+        });
+      });
+    },
     showStas() {
       this.statsModal = true;
     },

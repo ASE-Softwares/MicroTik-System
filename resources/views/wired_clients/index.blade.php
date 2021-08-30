@@ -19,7 +19,6 @@ Wired Clients
                         <th>#</th>
                         <th>Comment</th>
                         <th>Network</th>
-
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -28,7 +27,7 @@ Wired Clients
                 <tbody>
                     @foreach ($users as $user)
 
-                    <tr>
+                    <tr class="@if($user['disabled'] == 'true') bg-danger font-weight-bold text-white @endif">
                         <td class="">
                             {{$user['.id']}}
                         </td>
@@ -39,7 +38,7 @@ Wired Clients
                         </td>
 
                         <td>
-                            <code>{{$user['address']}}</code>
+                            <code class="@if($user['disabled'] == 'true') font-weight-bold text-white @endif">{{$user['address']}}</code>
                         </td>
 
 
@@ -47,17 +46,13 @@ Wired Clients
                         <td class="">
                             <div class="row">
                                 <div class="pl-3">
-                                   
-                                       <stats/>
-                                   
-                                </div>
 
+                                    <stats :client="{{  json_encode($user)}}" />
+
+                                </div>
                                 <div class="pl-3">
-                                    <a href="#">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
+                                    <Switch />
                                 </div>
-
                             </div>
                         </td>
                     </tr>

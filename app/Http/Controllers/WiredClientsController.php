@@ -14,6 +14,7 @@ use RouterOS;
 use RouterOS\Config;
 use RouterOS\Query;
 use Illuminate\Support\Str;
+use RouterOS\Client;
 
 class WiredClientsController extends Controller
 {
@@ -79,11 +80,14 @@ class WiredClientsController extends Controller
             'email' => $request->email == null ? strtoupper(Str::random(15)) : $request->email,
             'password' => Hash::make('asewireless_auth'),
         ]);
+
+        $s =  explode('.', $request->ip);
+        $newIp = $s[0] . '.' . $s[1] . '.' . $s[2] . '.' . '2';
         $client = WiredClient::create([
             'user_id' => $u->id,
             'location' => 'Kakamega',
             'package_id' => $p->id,
-            'ip_address' => $request->ip
+            'ip_address' => $newIp
         ]);
 
         // create an entry in address list
@@ -162,5 +166,56 @@ class WiredClientsController extends Controller
         } else {
             $this->suggestIp();
         }
+    }
+
+    public function toggleClient(Request $request)
+    {
+        $this->connection();
+
+        if ($request->enable == false) {
+
+            $query = new Query('/ip/address/enable');
+            $query->equal('numbers', $this->getNumber($request->client));
+            $r = $this->client->query($query)->read();
+
+            dd($r);
+        }
+
+        // return response()->json(null, 201);
+    }
+
+    public function getNumber(array $req)
+    {
+        // dd($req);
+        $query = new Query('/ip/address/find');
+        $r = $this->client->query($query)->read();
+        dd($r);
+    }
+    public function queueInfo($ip)
+    {
+        $s =  explode('.', $ip);
+        $newIp = $s[0] . '.' . $s[1] . '.' . $s[2] . '.' . '1';
+        $alternativeIp = $s[0] . '.' . $s[1] . '.' . $s[2] . '.' . '2';
+        $client = WiredClient::where('ip_address',  $newIp)->orWhere('ip_address',  $alternativeIp)->first();
+        if ($client != null) {
+            $client->load('user');
+        }
+
+        $r = [
+            'client' => $client,
+            'queue' => $this->queryQueue($alternativeIp),
+        ];
+
+        return response()->json($r, 201);
+    }
+
+    public function queryQueue($alternativeIp)
+    {
+        $query = new RouterOS\Query('/queue/simple/print');
+        $this->connection();
+        $data = collect($this->client->query($query)->read());
+        $result = $data->where('target', $alternativeIp . '/32')->first();
+        return $result;
+        // return $interfaces;
     }
 }

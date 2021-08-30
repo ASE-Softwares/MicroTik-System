@@ -71,4 +71,6 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('all_subs', 'WiredClientsSubscriptionsController@all');
     // Route::get('all_get_subs', 'WiredClientsSubscriptionsController@all_unpaginated');
     Route::resource('subscriptions', 'WiredClientsSubscriptionsController');
+    Route::post('disableClientInRouter', 'WiredClientsController@toggleClient');
+    Route::get('queue_information/{ip}', 'WiredClientsController@queueInfo');
 });

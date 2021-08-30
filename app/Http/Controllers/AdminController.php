@@ -134,17 +134,20 @@ class AdminController extends Controller
             'rate-limit' => 'nullable',
             'price' => 'required|numeric',
             'description' => 'nullable',
-            'keepalive-timeout' => 'required'
+            'days' => 'nullable|numeric|min:0|max:30',
+            'hours' => 'required|numeric|min:1|max:23',
+            'minutes' => 'required|numeric|min:1|max:59',
         ]);
 
         $descrip = explode(";", $data['description']);
         $descripJSON = json_encode($descrip);
         //save the profile to router
+        $keep_time = $data['days'] . ":" . $data['hours'] . ":" . $data['minutes'] . ": 00";
         $query =
             (new RouterOs\Query('/ip/hotspot/user/profile/add'))
             ->equal('name', $data['name'])
             ->equal('shared-users', $data['shared-users'])
-            ->equal('session-timeout', $data['keepalive-timeout'])
+            ->equal('session-timeout', $keep_time)
             ->equal('rate-limit', $data['rate-limit']);
         // Add user
         $this->connection();
@@ -157,7 +160,7 @@ class AdminController extends Controller
             'shared-users' => $data['shared-users'],
             'rate-limit' => $data['rate-limit'],
             'price' => $data['price'],
-            'keepalive-timeout' => $data['keepalive-timeout'],
+            'keepalive-timeout' =>  $keep_time,
             'micro_tik_id' => $this->current_microtik_id,
             'description' => $descripJSON
         ]);

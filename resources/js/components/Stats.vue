@@ -191,14 +191,10 @@ export default {
       }
     },
     speed(rate) {
-      // get the pos of the slash
       var right = Number(rate.split("/").pop());
       var left = Number(rate.substring(0, rate.indexOf("/")));
 
-      return Number(left / 1000000) + "M/" + Number(right / 1000000) + "M";
-      // split the string into two
-      //join it
-      //return it
+      return left + "Bps/" + right + "Bps";
     },
     reloadPage() {
       if (this.dataChanged == true) {

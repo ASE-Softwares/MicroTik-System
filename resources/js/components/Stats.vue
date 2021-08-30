@@ -105,6 +105,11 @@
                       <span class="text-white font-weight-bold h5">
                         {{ moreData.client.location }}</span
                       >
+                      <hr />
+                      <h4 class="text-dark">Subscription</h4>
+                      <span class="text-white font-weight-bold h5">
+                        {{ moreData.client.package.name }}</span
+                      >
                     </div>
                   </div>
                 </div>
@@ -123,6 +128,10 @@
                       <h4 class="text-dark">Comment</h4>
                       <span class="text-white font-weight-bold h5">
                         {{ moreData.queue.comment }}</span
+                      >
+                      <h4 class="text-dark">Upload/Download</h4>
+                      <span class="text-white font-weight-bold h5">
+                        {{ speed(moreData.queue.rate) }}</span
                       >
                     </div>
                   </div>
@@ -153,6 +162,7 @@ export default {
         queue: null,
       },
       dataChanged: false,
+      interalId: "",
     };
   },
   props: {
@@ -171,10 +181,30 @@ export default {
     },
   },
   methods: {
+    async getFastQueueData() {
+      const res = await this.callApi(
+        "get",
+        "/admin/fast_queue_information/" + this.client.network
+      );
+      if (res.status == 201) {
+        this.moreData.queue = res.data;
+      }
+    },
+    speed(rate) {
+      // get the pos of the slash
+      var right = Number(rate.split("/").pop());
+      var left = Number(rate.substring(0, rate.indexOf("/")));
+
+      return Number(left / 1000000) + "M/" + Number(right / 1000000) + "M";
+      // split the string into two
+      //join it
+      //return it
+    },
     reloadPage() {
       if (this.dataChanged == true) {
         window.location = "/admin/wired_clients";
       }
+      clearInterval(this.interalId);
     },
     speedConv(rate) {
       // get the pos of the slash
@@ -193,7 +223,14 @@ export default {
       );
       if (res.status == 201) {
         this.moreData = res.data;
+        this.startRealTime();
+        // this.getFastQueueData();
       }
+    },
+    startRealTime() {
+      this.interalId = setInterval(() => {
+        this.getFastQueueData();
+      }, 1500);
     },
     async CallApiToDisable() {
       this.isWorking = true;

@@ -152,8 +152,7 @@ class WiredClientsController extends Controller
         $query = (new RouterOs\Query('/queue/simple/add'))
             ->equal('name', $wired_client->user->name)
             ->equal('target', $newIp)
-            ->equal('max-limit', $p->rate)
-            ->equal('comment', $wired_client->user->name);
+            ->equal('max-limit', $p->rate);
         $this->client->query($query)->read();
         return;
     }
@@ -217,7 +216,7 @@ class WiredClientsController extends Controller
         $alternativeIp = $s[0] . '.' . $s[1] . '.' . $s[2] . '.' . '2';
         $client = WiredClient::where('ip_address',  $newIp)->orWhere('ip_address',  $alternativeIp)->first();
         if ($client != null) {
-            $client->load('user');
+            $client->load(['user', 'package']);
         }
 
         $r = [
@@ -236,5 +235,18 @@ class WiredClientsController extends Controller
         $result = $data->where('target', $alternativeIp . '/32')->first();
         return $result;
         // return $interfaces;
+    }
+
+    public function liteQueueInfo($ip)
+    {
+        $s =  explode('.', $ip);
+        $newIp = $s[0] . '.' . $s[1] . '.' . $s[2] . '.' . '1';
+        $alternativeIp = $s[0] . '.' . $s[1] . '.' . $s[2] . '.' . '2';
+
+
+        $r =  $this->queryQueue($alternativeIp);
+
+
+        return response()->json($r, 201);
     }
 }

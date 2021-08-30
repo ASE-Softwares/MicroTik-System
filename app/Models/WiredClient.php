@@ -21,4 +21,8 @@ class WiredClient extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function package()
+    {
+        return $this->belongsTo(Package::class)->withDefault();
+    }
 }

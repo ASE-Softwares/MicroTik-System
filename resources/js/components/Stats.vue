@@ -152,6 +152,7 @@ export default {
         client: null,
         queue: null,
       },
+      dataChanged: false,
     };
   },
   props: {
@@ -171,8 +172,9 @@ export default {
   },
   methods: {
     reloadPage() {
-      alert("To Be on Sync with the router, we may need to reload the page.");
-      window.location = "/admin/wired_clients";
+      if (this.dataChanged == true) {
+        window.location = "/admin/wired_clients";
+      }
     },
     speedConv(rate) {
       // get the pos of the slash
@@ -205,6 +207,7 @@ export default {
         obj
       );
       if (res.status == 201) {
+        this.dataChanged = true;
         this.s("Client " + res.data.action + "d Successfuly");
         if (res.data.current_state == "Active") {
           this.enabled = true;

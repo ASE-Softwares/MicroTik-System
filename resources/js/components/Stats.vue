@@ -4,6 +4,7 @@
       <i class="fas fa-plus text-success"></i>
     </a>
     <Modal
+      @on-hidden="reloadPage()"
       v-model="statsModal"
       title="Client Details"
       :mask-closable="false"
@@ -77,7 +78,7 @@
                   <h4 class="text-dark">Status :</h4>
 
                   <span class="text-white font-weight-bold h5">{{
-                    client.disabled == "false" ? "Active" : "Disabled"
+                    enabled ? "Active" : "Disabled"
                   }}</span>
                 </div>
               </div>
@@ -169,6 +170,10 @@ export default {
     },
   },
   methods: {
+    reloadPage() {
+      alert("To Be on Sync with the router, we may need to reload the page.");
+      window.location = "/admin/wired_clients";
+    },
     speedConv(rate) {
       // get the pos of the slash
       var right = Number(rate.split("/").pop());
@@ -192,7 +197,7 @@ export default {
       this.isWorking = true;
       let obj = {
         client: this.client,
-        enable: this.enabled,
+        action: this.enabled ? "Disable" : "Enable",
       };
       const res = await this.callApi(
         "post",
@@ -200,15 +205,16 @@ export default {
         obj
       );
       if (res.status == 201) {
-        this.s(
-          "CLient " + (this.enabled ? "Disabled" : "Enabled ") + " Successfuly"
-        );
-        this.enabled = true;
-        window.location = "/admin/wired_clients";
+        this.s("Client " + res.data.action + "d Successfuly");
+        if (res.data.current_state == "Active") {
+          this.enabled = true;
+        } else {
+          this.enabled = false;
+        }
+        // window.location = "/admin/wired_clients";
       } else {
         this.e("Error Occured");
       }
-      this.enabled = this.client.disabled == "true" ? false : true;
       this.isWorking = false;
     },
     handleBeforeChange() {

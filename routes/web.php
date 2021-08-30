@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test/{wired_client}', "WiredClientsController@addQueue");
+// Route::get('/test/{wired_client}', "WiredClientsController@addQueue");
 Route::get('/', [App\Http\Controllers\GuestController::class, 'welcome']);
 Route::post('/customer/purchase', [App\Http\Controllers\GuestController::class, 'purchase'])->name('purchase');
 Auth::routes(['register' => false]);

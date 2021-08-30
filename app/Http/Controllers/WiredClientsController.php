@@ -172,16 +172,35 @@ class WiredClientsController extends Controller
     {
         $this->connection();
 
-        if ($request->enable == false) {
-
+        if ($request->action == 'Enable') {
+            $userId = $request->client['.id'];
             $query = new Query('/ip/address/enable');
-            $query->equal('numbers', $this->getNumber($request->client));
-            $r = $this->client->query($query)->read();
+            $query->equal('.id', $userId);
+            $this->client->query($query)->read();
 
-            dd($r);
+            $query2 = (new Query('/ip/address/print'))->where('.id', $userId);
+            $result2 =  $this->client->query($query2)->read();
+            $res = [
+                'status' => $result2[0]['disabled'] == 'false' ? 'Success' : 'Failed',
+                'action' => 'Enable',
+                'current_state' => $result2[0]['disabled'] == 'false' ? 'Active' : 'Disabled'
+            ];
+            return response()->json($res, 201);
+        } else {
+            $userId = $request->client['.id'];
+            $query = new Query('/ip/address/disable');
+            $query->equal('.id', $userId);
+            $this->client->query($query)->read();
+
+            $query2 = (new Query('/ip/address/print'))->where('.id', $userId);
+            $result2 =  $this->client->query($query2)->read();
+            $res = [
+                'status' => $result2[0]['disabled'] == 'true' ? 'Success' : 'Failed',
+                'action' => 'Disable',
+                'current_state' => $result2[0]['disabled'] == 'false' ? 'Active' : 'Disabled'
+            ];
+            return response()->json($res, 201);
         }
-
-        // return response()->json(null, 201);
     }
 
     public function getNumber(array $req)

@@ -34,7 +34,7 @@ Wired Clients
                         </div>
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="text" value="{{old('email')}}" name="email" id="email" class="form-control" placeholder="Provide an Email Address" required>
+                            <input type="text" value="{{old('email')}}" name="email" id="email" class="form-control" placeholder="Provide an Email Address">
                             @error('email')
                             <small class="text-danger">{{$message}}</small>
                             @enderror

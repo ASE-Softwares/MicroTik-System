@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddWiredClientRequest;
+use App\Http\Requests\SyncClientRequest;
 use App\Models\MicroTik;
 use App\Models\Package;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\WiredClient;
 use Carbon\Carbon;
+use FontLib\Table\Type\name;
 use Illuminate\Support\Facades\Hash;
 use RouterOS;
 use RouterOS\Config;
@@ -248,5 +250,29 @@ class WiredClientsController extends Controller
 
 
         return response()->json($r, 201);
+    }
+
+    public function newClient(SyncClientRequest $request)
+    {
+        // "ip" => "52.132.97.0"
+        // "client_name" => "Lenovo Base Client"
+        // "email" => "test@test.com"
+        // "package_id" => 2
+
+        $u =  User::create([
+            'name' => ucwords($request->client_name),
+            'email' => $request->email ? strtolower($request->email) : strtolower(str_replace(' ', '', $request->client_name)) . '@raosys.com',
+            'password' => Hash::make('defaultpassword'),
+        ]);
+        $s =  explode('.', $request->ip);
+        $ip = $s[0] . '.' . $s[1] . '.' . $s[2] . '.' . '2';
+        $w =  WiredClient::create([
+            'user_id' => $u->id,
+            'location' => 'Kakamega',
+            'package_id' => $request->package_id,
+            'ip_address' => $ip
+        ]);
+
+        return response()->json($w, 201);
     }
 }

@@ -11,6 +11,7 @@
       :closable="true"
       :width="95"
       :styles="{ top: '20px' }"
+      footer-hide
     >
       {{
         enabled ? "Switch Click to Disable Client" : "Switch to Enable Client"
@@ -26,10 +27,7 @@
         <Icon type="md-close" slot="close"></Icon>
       </i-switch>
 
-      <hr class="mt-2 mb-1" />
-
       <div class="card">
-        <div class="card-header">More Information</div>
         <div class="card-body">
           <div class="row mb-2">
             <div class="col-sm">
@@ -49,9 +47,12 @@
                   <span class="text-white font-weight-bold h5">{{
                     client.address
                   }}</span>
+                  <br />
+                  <small> {{ client.comment }}</small>
                 </div>
               </div>
             </div>
+
             <div class="col-sm">
               <div class="card">
                 <div class="card-body bg-info">
@@ -84,46 +85,51 @@
               </div>
             </div>
           </div>
-          <div class="row mt-3">
-            <div class="col-md-4" v-if="moreData.client != null">
+          <div class="row mt-2">
+            <div class="col-md-3" v-if="moreData.client != null">
               <div class="card">
                 <div class="card-header">Client Information</div>
                 <div class="card-body">
-                  <div class="card">
-                    <div class="card-body bg-success">
-                      <h4 class="text-dark">Name</h4>
-                      <span class="text-white font-weight-bold h5">
-                        {{ moreData.client.user.name }}</span
+                  <div>
+                    <span class="text-info font-weight-bold h6">
+                      <i class="fa fa-user" aria-hidden="true"></i>
+                      {{ moreData.client.user.name }}</span
+                    >
+                    <br />
+                    <span class="text-info font-weight-bold h6 brkln">
+                      <i class="fa fa-envelope" aria-hidden="true"></i>
+                      <a
+                        target="_blank"
+                        :href="'mailto:' + moreData.client.user.email"
                       >
-                      <hr />
-                      <h4 class="text-dark">Email</h4>
-                      <span class="text-white font-weight-bold h5">
-                        {{ moreData.client.user.email }}</span
+                        {{ moreData.client.user.email }}</a
                       >
-                      <hr />
-                      <h4 class="text-dark">Location</h4>
-                      <span class="text-white font-weight-bold h5">
-                        {{ moreData.client.location }}</span
-                      >
-                      <hr />
-                      <h4 class="text-dark">Subscription</h4>
-                      <span class="text-white font-weight-bold h5">
-                        {{ moreData.client.package.name }}</span
-                      >
-                    </div>
+                    </span>
+                    <br />
+                    <span class="text-info font-weight-bold h6">
+                      <i class="fa fa-map-marker" aria-hidden="true"></i>
+                      {{ moreData.client.location }}</span
+                    >
+                    <br />
+                    <p class="text-dark">Subscription</p>
+                    <span class="text-info font-weight-bold h6">
+                      {{ moreData.client.package.name }}</span
+                    >
                   </div>
+                  <package-switcher :client="moreData.client" />
                 </div>
               </div>
             </div>
-            <div class="col-md-4" v-else>
+            <div class="col-md-3" v-else>
               <div v-if="AppReady">
                 <update-profile
+                  v-if="moreData.queue != null"
                   v-on:client_updated="UseNewData"
                   :client="client"
                 />
               </div>
             </div>
-            <div class="col-md-8" v-if="moreData.queue != null">
+            <div class="col-md-9" v-if="moreData.queue != null">
               <div class="card">
                 <div class="card-header">Network Statistics</div>
                 <div class="card-body">
@@ -149,20 +155,16 @@
           </div>
         </div>
       </div>
-
-      <div slot="footer">
-        <Button size="small" type="error" @click="statsModal = false"
-          >Close <i class="fas fa-window-close" aria-hidden="true"></i
-        ></Button>
-      </div>
     </Modal>
   </div>
 </template>
 <script>
+import PackageSwitcher from "./PackageSwitcher.vue";
 import UpdateProfile from "./UpdateDetails.vue";
 export default {
   components: {
     UpdateProfile,
+    PackageSwitcher,
   },
   data() {
     return {
@@ -240,7 +242,9 @@ export default {
       if (res.status == 201) {
         this.moreData = res.data;
         this.AppReady = true;
-        this.startRealTime();
+        if (!this.moreData.queue == null) {
+          this.startRealTime();
+        }
         // this.getFastQueueData();
       }
     },
@@ -293,3 +297,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.brkln {
+  overflow: auto;
+  white-space: nowrap;
+}
+</style>

@@ -26,6 +26,7 @@ Route::post('/confirmation', [App\Helpers\Mpesa::class, 'mpesaConfirmation'])->n
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::post('swith_client_profile/{wired_client}', 'WiredClientsController@swith_client_profile');
     Route::post('createUserFromIp', 'WiredClientsController@newClient');
     Route::get('subscriptions_json', [App\Http\Controllers\HomeController::class, 'subscriptions']);
     Route::get('router/auto_login/{microtik}', [App\Http\Controllers\HomeController::class, 'router_auto_login'])->name('router_auto_login');

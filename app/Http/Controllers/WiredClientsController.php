@@ -272,7 +272,7 @@ class WiredClientsController extends Controller
             'package_id' => $request->package_id,
             'ip_address' => $ip
         ]);
-
+        $w->load(['user', 'package']);
         return response()->json($w, 201);
     }
 }

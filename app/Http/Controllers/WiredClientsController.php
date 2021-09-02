@@ -204,13 +204,6 @@ class WiredClientsController extends Controller
         }
     }
 
-    public function getNumber(array $req)
-    {
-        // dd($req);
-        $query = new Query('/ip/address/find');
-        $r = $this->client->query($query)->read();
-        dd($r);
-    }
     public function queueInfo($ip)
     {
         $s =  explode('.', $ip);

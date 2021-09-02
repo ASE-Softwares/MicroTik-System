@@ -15,7 +15,7 @@ class AdminAnyController extends Controller
      */
     public function index()
     {
-        $Admins = User::all();
+        $Admins = User::where('admin', 1)->get();
         return view('admin.admins.index', compact('Admins'));
     }
 
@@ -102,19 +102,19 @@ class AdminAnyController extends Controller
         return $this->index();
     }
 
-    public function changeRouter(Request $request) {
-        if($request->session()->exists('router_session')){
-            $logged_in_to_router =true;
-        }else{
-            $logged_in_to_router =false;
+    public function changeRouter(Request $request)
+    {
+        if ($request->session()->exists('router_session')) {
+            $logged_in_to_router = true;
+        } else {
+            $logged_in_to_router = false;
         }
         //if you logged in to router 
         if ($logged_in_to_router) {
             $request->session()->forget("router_session");
             return redirect(route('router_login'));
-        }else{
+        } else {
             return redirect(route('router_login'));
         }
     }
-    
 }

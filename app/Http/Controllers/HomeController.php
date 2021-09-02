@@ -10,9 +10,16 @@ use Carbon\Carbon;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\Admin;
 use App\Models\Package;
+use App\Models\WiredClient;
+use RouterOS\Config;
+use RouterOS\Query;
 
 class HomeController extends Controller
 {
+
+	public $client;
+	public $current_microtik_id;
+	public $session_data;
 	/**
 	 * Create a new controller instance.
 	 *
@@ -21,6 +28,24 @@ class HomeController extends Controller
 	public function __construct()
 	{
 		$this->middleware('auth');
+	}
+
+	public function connection()
+	{
+		$config = new Config();
+		$data = session()->get('router_session');
+		$this->session_data = $data;
+		$c = $config->set('timeout', 1)
+			->set('host', $data['ip'])
+			->set('user',  $data['username'])
+			->set('pass', $data['password'])
+			->set('port', intval($data['port']));
+		try {
+			$this->client = new RouterOS\Client($c);
+		} catch (\Exception $e) {
+			session()->forget('router_session');
+			return redirect(route('router_login'))->with('error_message', 'Router Disconnected! Please Check if its connected');
+		}
 	}
 
 	/**
@@ -44,8 +69,19 @@ class HomeController extends Controller
 			$thisYearEarnings = $this->calculateThisYearTotal();
 			$allInterfaces = new AdminController;
 			$interfaces = $allInterfaces->interfaces();
+			$wired_client = $this->getwired_client();
+			$active_clients = $this->getactive_clients();
+			$inactive_clients = $this->getinactive_clients();
 
-			return view('home', compact('todayEarnings', 'thisMonthEarnings', 'thisYearEarnings', 'interfaces'));
+			return view('home', compact(
+				'todayEarnings',
+				'thisMonthEarnings',
+				'thisYearEarnings',
+				'interfaces',
+				'wired_client',
+				'active_clients',
+				'inactive_clients'
+			));
 		} else {
 			return redirect(route('router_login'));
 		}
@@ -145,5 +181,28 @@ class HomeController extends Controller
 		} else {
 			abort(500);
 		}
+	}
+
+	public function getwired_client()
+	{
+		$c = WiredClient::count();
+		return $c;
+	}
+	public function getactive_clients()
+	{
+		return	$this->queryQueue('false');
+	}
+	public function getinactive_clients()
+	{
+		return $this->queryQueue('true');
+	}
+
+	private function queryQueue($status)
+	{
+		$query = new Query('/ip/address/print');
+		$query->where('disabled', $status);
+		$this->connection();
+		$users = collect($this->client->query($query)->read());
+		return $users->count();
 	}
 }

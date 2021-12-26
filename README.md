@@ -24,3 +24,5 @@ If you downloaded the zip file from our website,
  3. Follow the prompts
 
 If you downloaded the code from GitHub, run composer install on cloned directory and follow  from step 2 above.
+## **Screenshots**
+![Packages](https://photos.app.goo.gl/6pdsbSyWD76Tk2tY9)

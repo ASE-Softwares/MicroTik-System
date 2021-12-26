@@ -116,7 +116,7 @@ class HomeController extends Controller
 		try {
 			$client = new RouterOS\Client($config);
 		} catch (\Exception $e) {
-			return redirect()->back()->with('error', $e);
+			return redirect()->back()->with('error', 'Router Disconnected! Please Check if its connected');
 		}
 		session(['router_session' => $data]);
 		return redirect(route('home'));

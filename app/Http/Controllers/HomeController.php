@@ -161,17 +161,17 @@ class HomeController extends Controller
 
 	public function calculateDailyTotal()
 	{
-		return MpesaTransaction::whereDay('created_at', '=', date('d'))->sum('amount');
+		return MpesaTransaction::whereDay('created_at', '=', date('d'))->where('status', 'Conected To Network SuccessFully')->sum('amount');
 	}
 
 	public function calculateThisMonthTotal()
 	{
-		return MpesaTransaction::whereMonth('created_at', '=', date('m'))->sum('amount');
+		return MpesaTransaction::whereMonth('created_at', '=', date('m'))->where('status', 'Conected To Network SuccessFully')->sum('amount');
 	}
 
 	public function calculateThisYearTotal()
 	{
-		return MpesaTransaction::whereYear('created_at', '=', date('Y'))->sum('amount');
+		return MpesaTransaction::whereYear('created_at', '=', date('Y'))->where('status', 'Conected To Network SuccessFully')->sum('amount');
 	}
 
 	public function subscriptions(Request $request)

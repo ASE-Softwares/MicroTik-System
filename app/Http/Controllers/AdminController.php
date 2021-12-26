@@ -135,14 +135,15 @@ class AdminController extends Controller
             'price' => 'required|numeric',
             'description' => 'nullable',
             'days' => 'nullable|numeric|min:0|max:30',
-            'hours' => 'required|numeric|min:1|max:23',
-            'minutes' => 'required|numeric|min:1|max:59',
+            'hours' => 'required|numeric|min:0|max:23',
+            'minutes' => 'required|numeric|min:0|max:59',
         ]);
 
         $descrip = explode(";", $data['description']);
         $descripJSON = json_encode($descrip);
         //save the profile to router
-        $keep_time = $data['days'] . ":" . $data['hours'] . ":" . $data['minutes'] . ": 00";
+        $keep_time = $data['days'] . ":" . $data['hours'] . ":" . $data['minutes'];
+        // dd($keep_time);
         $query =
             (new RouterOs\Query('/ip/hotspot/user/profile/add'))
             ->equal('name', $data['name'])
@@ -152,6 +153,7 @@ class AdminController extends Controller
         // Add user
         $this->connection();
         $response =  $this->client->query($query)->read();
+        // dd($response);
         $this->discover_microtik();
         //    dd($descripJSON);
         //extend the profile to database

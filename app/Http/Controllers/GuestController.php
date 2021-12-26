@@ -69,17 +69,21 @@ class GuestController extends Controller
 
     $response_object = response($response)->getContent();
     $response_object_as_json = json_decode($response_object, true);
-    if ($response_object_as_json['ResponseCode'] == "0") {
-      MpesaTransaction::create([
-        'CheckoutRequestID' => $response_object_as_json['CheckoutRequestID'],
-        'amount' => $amount,
-        'MpesaReceiptNumber' => Str::random(15),
-        'TransactionDate' => Carbon::now(),
-        'PhoneNumber' => $data['phone_number'],
-        'status' => 'Push Sent',
-        'profile_id' => $package->id
-      ]);
+    if (array_key_exists('errorMessage', $response_object_as_json)) {
+    } else {
+      if ($response_object_as_json['ResponseCode'] == "0") {
+        MpesaTransaction::create([
+          'CheckoutRequestID' => $response_object_as_json['CheckoutRequestID'],
+          'amount' => $amount,
+          'MpesaReceiptNumber' => Str::random(15),
+          'TransactionDate' => Carbon::now(),
+          'PhoneNumber' => $data['phone_number'],
+          'status' => 'Push Sent',
+          'profile_id' => $package->id
+        ]);
+      }
     }
+
     return $response;
   }
 

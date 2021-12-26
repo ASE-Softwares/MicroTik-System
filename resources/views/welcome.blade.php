@@ -392,6 +392,11 @@
             background: -webkit-linear-gradient(315deg, hsla(236.6, 0%, 53.52%, 1) 0, hsla(236.6, 0%, 53.52%, 0) 70%), -webkit-linear-gradient(65deg, hsla(220.75, 34.93%, 26.52%, 1) 10%, hsla(220.75, 34.93%, 26.52%, 0) 80%), -webkit-linear-gradient(135deg, hsla(46.42, 36.62%, 83.92%, 1) 15%, hsla(46.42, 36.62%, 83.92%, 0) 80%), -webkit-linear-gradient(205deg, hsla(191.32, 50.68%, 56.45%, 1) 100%, hsla(191.32, 50.68%, 56.45%, 0) 70%);
             background: linear-gradient(135deg, hsla(236.6, 0%, 53.52%, 1) 0, hsla(236.6, 0%, 53.52%, 0) 70%), linear-gradient(25deg, hsla(220.75, 34.93%, 26.52%, 1) 10%, hsla(220.75, 34.93%, 26.52%, 0) 80%), linear-gradient(315deg, hsla(46.42, 36.62%, 83.92%, 1) 15%, hsla(46.42, 36.62%, 83.92%, 0) 80%), linear-gradient(245deg, hsla(191.32, 50.68%, 56.45%, 1) 100%, hsla(191.32, 50.68%, 56.45%, 0) 70%);
         }
+
+        li {
+            margin-bottom: 1px;
+            margin-top: 1px;
+        }
     </style>
 
 
@@ -429,14 +434,14 @@
             <div class="container">
                 <!-- Title  -->
                 <div class="row justify-content-center">
-                    <div class="col-md-4 text-center mx-auto">
+                    <div class="col-md-9 text-center mx-auto">
                         <div class="mb-3">
                             <a href="#">
                                 <img src="/img/wifi.png" alt="Logo Themesberg Light" class="mb-4" style="width: 75px;">
-                                <h1 class="h3 mb-4">ASE Wireless</h1>
+                                <h1 class="h3 mb-4">{{config('app.name')}}</h1>
                             </a>
-                            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modelId">
-                                Click To Learn How To Use
+                            <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#modelId">
+                                Learn How
                             </button>
                         </div>
                     </div>
@@ -459,7 +464,7 @@
 
 
 
-                            <div class="col-md-6 col-lg-4 m-auto">
+                            <div class="col-md-12 col-lg-6">
                                 <!-- Pricing Card -->
                                 <div class="pricing-card mt-3">
                                     <div class="card microtik-card-button text-center text-white p-4">
@@ -518,7 +523,7 @@
                                             <li class="list-group-item p-1">Enter your MPESA confirmation code as password eg <strong>OULI5KIAWAPI</strong> as password</li>
                                             <li class="list-group-item p-1">Click Login and Enjoy</li>
                                             <br>
-                                            <li class="list-group-item p-1">For any Challenges, send an sms or call <a href="tel:0708509365">Our support</a> <a href="tel:07">team</a></li>
+                                            <li class="list-group-item p-1">For any Challenges, send an sms or call <a href="tel:254708509365">Our support desk</a></li>
                                         </ol>
                                     </div>
                                     <div class="modal-footer">

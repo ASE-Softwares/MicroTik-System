@@ -25,4 +25,5 @@ If you downloaded the zip file from our website,
 
 If you downloaded the code from GitHub, run composer install on cloned directory and follow  from step 2 above.
 ## **Screenshots**
-![Packages](https://photos.app.goo.gl/6pdsbSyWD76Tk2tY9)
+![Packages](https://lh3.googleusercontent.com/oTQKeqEIGvxyElQYXLSX3KDOgutnDvXUbYFCtXOR2-AxM7NON-c6bfR1dxbTw7BIg1b2cE2My7oQozHWmIO_4qwCffc0A5NpXcQTGgRz-5pbMdN1772xjJMaeAmPgLcAhz-jkZhm3A=w2400)
+![enter image description here](https://lh3.googleusercontent.com/9GO7cqn64Nm4ok0qbHQx2CEyuBsIc4ZhyYq76a0HhUznfpsIu5mdm7sz6GMobDQe4YolgfkW6ixALQ1lJFqq7-kMCPb9BBeqgMMuN3UI84gcE2iMHhi3r92Mds2J9RX1OxOosRF1mw=w2400)![enter image description here](https://lh3.googleusercontent.com/k_sOa3HZeDhpV48ShB1AJjbIMBKcERlu5oQ3zzR41E2kAj_YIr7AiLd9SR04XHqIBEzQUi3O4OzCB8EXTfOIqtmeh7CRtEzndffYqS0JiJqAFtX36cpnis_gUtr0iXVy3OuWhkSkew=w2400)
